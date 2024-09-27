@@ -9,6 +9,7 @@ use App\Models\Cdr;
 use App\Models\Customer;
 use App\Models\Did;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Index extends Component
@@ -19,39 +20,47 @@ class Index extends Component
 
     public $tarifas;
 
-    public $tarifa = [];
-
     public $dids;
 
-    public $did = [];
+    public $carriers;
 
-    public $carriers; // Para armazenar a lista de carriers
+    public $customers;
 
-    public $carrier = []; // ID da carrier selecionada
+    public $status;
 
-    public $customers; // Para armazenar a lista de carriers
-
-    public $customer = []; // ID da carrier selecionada
-
-    public $status; // ID da carrier selecionada
-
-    public $stat = []; // ID da carrier selecionada
-
-    public $desligamentos; // ID da carrier selecionada
-
-    public $desligamento = []; // ID da carrier selecionada
+    public $desligamentos;
 
     public $numero;
 
     public $ramal;
 
+    public $filters = [];
+
+    public $tarifa = [];
+
+    public $did = [];
+
+    public $carrier = []; // ID da carrier selecionada
+
+    public $customer = []; // ID da carrier selecionada
+
+    public $stat = []; // ID da carrier selecionada
+
+    public $desligamento = []; // ID da carrier selecionada
+
+    public $details;
+
     public $slide = false;
+
+    public $modal = false;
 
     use Table;
 
     public function mount()
     {
-	$this->direction = 'DESC';
+
+        $this->direction = 'DESC';
+
         $this->status = [
             ['label' => 'Todos', 'value' => 'All'],
             ['label' => 'Pendente', 'value' => 'Pendente'],
@@ -65,6 +74,13 @@ class Index extends Component
         ];
 
         $this->resetFilter();
+    }
+
+    public function openDetails($value)
+    {
+        $this->details = Cdr::find($value);
+        $this->modal = true;
+
     }
 
     public function updatedStat($value)
@@ -144,6 +160,16 @@ class Index extends Component
 
     public function filter()
     {
+        $this->filters['data_inicial'] = $this->data_inicial.'T00:00:00';
+        $this->filters['data_final'] = $this->data_final.'T23:59:59';
+        $this->filters['tarifa'] = $this->tarifa;
+        $this->filters['did'] = $this->did;
+        $this->filters['carrier'] = $this->carrier;
+        $this->filters['customer'] = $this->customer;
+        $this->filters['stat'] = $this->stat;
+        $this->filters['desligamento'] = $this->desligamento;
+        $this->filters['numero'] = $this->numero;
+        $this->filters['ramal'] = $this->ramal;
 
         $this->slide = false;
     }
@@ -188,7 +214,7 @@ class Index extends Component
             ],
         ])->merge(Customer::all()->map(function ($customer) {
             return [
-                'label' => $customer->razaosocial,
+                'label' => Str::limit($customer->razaosocial, 15),
                 'value' => $customer->id,
                 'description' => $customer->id,
             ];
@@ -210,24 +236,37 @@ class Index extends Component
         }))->toArray();
         $this->desligamento = ['Origem', 'Destino'];
         $this->stat = ['Pendente', 'Tarifado', 'Erro'];
+
+        $this->filters['data_inicial'] = $this->data_inicial.'T00:00:00';
+        $this->filters['data_final'] = $this->data_final.'T23:59:59';
+        $this->filters['tarifa'] = $this->tarifa;
+        $this->filters['did'] = $this->did;
+        $this->filters['carrier'] = $this->carrier;
+        $this->filters['customer'] = $this->customer;
+        $this->filters['stat'] = $this->stat;
+        $this->filters['desligamento'] = $this->desligamento;
+        $this->filters['numero'] = $this->numero;
+        $this->filters['ramal'] = $this->ramal;
     }
 
     public function render()
     {
-        $cdrs = Cdr::Where('id', 'like', '%'.$this->search.'%')//with('carrier', 'customer')
-//            ->whereBetween('calldate', [$this->data_inicial, $this->data_final])
-  //          ->whereIn('carrier_id', $this->carrier)
-    //        ->whereIn('customer_id', $this->customer)
-      //      ->whereIn('did_id', $this->did)
-        //    ->whereIn('tarifa', $this->tarifa)
-          //  ->whereIn('desligamento', $this->desligamento)
-            //->whereIn('status', $this->stat)
-//            ->when($this->ramal, function ($query) {
-  //              $query->where('ramal', 'like', '%'.$this->ramal.'%');
-    //        })
-      //      ->when($this->numero, function ($query) {
-        //        $query->where('numero', 'like', '%'.$this->numero.'%');
-          //  })
+        // dd($this->data_inicial, $this->data_final);
+        //$cdrs = Cdr::Where('id', 'like', '%'.$this->search.'%')//with('carrier', 'customer')
+        $cdrs = Cdr::with('customer', 'carrier')
+            ->whereBetween('calldate', [$this->filters['data_inicial'], $this->filters['data_final']])
+            ->whereIn('carrier_id', $this->filters['carrier'])
+            ->whereIn('customer_id', $this->filters['customer'])
+            ->whereIn('did_id', $this->filters['did'])
+            ->whereIn('tarifa', $this->filters['tarifa'])
+            ->whereIn('desligamento', $this->filters['desligamento'])
+            ->whereIn('status', $this->filters['stat'])
+            ->when($this->filters['ramal'], function ($query) {
+                $query->where('ramal', 'like', '%'.$this->filters['ramal'].'%');
+            })
+            ->when($this->filters['numero'], function ($query) {
+                $query->where('numero', 'like', '%'.$this->filters['numero'].'%');
+            })
             ->orderBy($this->sort, $this->direction)
             ->paginate($this->perPage);
 

@@ -1,4 +1,4 @@
-<div wire:poll.1000ms>
+<div>
     {{-- <div> --}}
     <x-ui-slide persistent size="lg" id="slade-filter" left wire>
 
@@ -21,11 +21,11 @@
 
                     <div class="flex col-span-4 gap-3">
                         <div class="w-3/6">
-                            <x-ui-date label="Data Inicial" wire:model='data_inicial' format="DD/MM/YYYY"
+                            <x-ui-date label="Data Inicial" wire:model.live='data_inicial' format="DD/MM/YYYY"
                                 :max-date="now()" />
                         </div>
                         <div class="w-3/6">
-                            <x-ui-date label="Data Final" wire:model='data_final' format="DD/MM/YYYY"
+                            <x-ui-date label="Data Final" wire:model.live='data_final' format="DD/MM/YYYY"
                                 :max-date="now()" />
                         </div>
                     </div>
@@ -58,10 +58,10 @@
 
                     <div class="flex col-span-4 gap-3">
                         <div class="w-3/6">
-                            <x-ui-input label="Numero" icon="dialpad" wire:model='numero' />
+                            <x-ui-input label="Numero" icon="dialpad" wire:model.live='numero' />
                         </div>
                         <div class="w-3/6">
-                            <x-ui-input label="Ramal" icon="dialpad" wire:model='ramal' />
+                            <x-ui-input label="Ramal" icon="dialpad" wire:model.live='ramal' />
                         </div>
                     </div>
 
