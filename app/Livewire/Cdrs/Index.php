@@ -8,6 +8,7 @@ use App\Models\Carrier;
 use App\Models\Cdr;
 use App\Models\Customer;
 use App\Models\Did;
+//use App\Services\CallTariffService;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -56,14 +57,26 @@ class Index extends Component
 
     use Table;
 
+    //public $cdr; // Certifique-se de que isso esteja definido corretamente
+
+    //protected $tariffService;
+
+    // public function mount(CallTariffService $tariffService)
     public function mount()
     {
+        //$this->cdr = Cdr::where('status', 'Pendente')->where('billsec', '<', 40)->where('billsec', '>', 3)->where('tarifa', 'Fixo')->first();
+        //$this->tariffService = $tariffService;
+        //$tarifas = $this->tariffService->calcularTarifa($this->cdr);
+        //dd($tarifas, $this->cdr); // ou armazene em uma variável para exibir na view
+
+        // $this->tariffService->calcularTarifa($this->cdr);
 
         $this->direction = 'DESC';
 
         $this->status = [
             ['label' => 'Todos', 'value' => 'All'],
             ['label' => 'Pendente', 'value' => 'Pendente'],
+            ['label' => 'Processada', 'value' => 'Processada'],
             ['label' => 'Tarifado', 'value' => 'Tarifado'],
             ['label' => 'Erro', 'value' => 'Erro'],
         ];
@@ -79,6 +92,7 @@ class Index extends Component
     public function openDetails($value)
     {
         $this->details = Cdr::find($value);
+        // dd($this->details);
         $this->modal = true;
 
     }
@@ -90,7 +104,7 @@ class Index extends Component
         }
         if (in_array('All', $this->stat)) {
             // Se "Todos" for selecionado, substitui por todas as operadoras
-            $this->stat = ['Pendente', 'Tarifado', 'Erro'];
+            $this->stat = ['Pendente', 'Tarifado', 'Erro', 'Processada'];
         }
     }
 
@@ -235,7 +249,7 @@ class Index extends Component
             ];
         }))->toArray();
         $this->desligamento = ['Origem', 'Destino'];
-        $this->stat = ['Pendente', 'Tarifado', 'Erro'];
+        $this->stat = ['Pendente', 'Tarifado', 'Processada', 'Erro'];
 
         $this->filters['data_inicial'] = $this->data_inicial.'T00:00:00';
         $this->filters['data_final'] = $this->data_final.'T23:59:59';

@@ -14,12 +14,13 @@
 
             <div class="col-span-1">
                 <strong class="font-semibold text-gray-900 dark:text-white"><span
-                        class="text-strong">Data:</strong></span> {{ date('d/m/Y', strtotime($cdr->calldate)) }}
+                        class="text-strong">Data:</strong></span>
+                {{ date('d/m/Y', strtotime($details->calldate ?? '0')) }}
             </div>
 
             <div class="col-span-1">
                 <strong class="font-semibold text-gray-900 dark:text-white">Hora:</strong>
-                {{ date('H:i:s', strtotime($cdr->calldate)) }}
+                {{ date('H:i:s', strtotime($details->calldate ?? '0')) }}
             </div>
 
             <div class="col-span-1">
@@ -54,22 +55,22 @@
 
             <div class="col-span-1">
                 <strong class="font-semibold text-gray-900 dark:text-white">Duração:</strong>
-                {{ \Carbon\Carbon::createFromFormat('U', $cdr->duration ?? '')->format('H:i:s') }}
+                {{ \Carbon\Carbon::createFromFormat('U', $details->duration ?? '0')->format('H:i:s') }}
             </div>
 
             <div class="col-span-1">
                 <strong class="font-semibold text-gray-900 dark:text-white">Tempo Falado:</strong>
-                {{ \Carbon\Carbon::createFromFormat('U', $cdr->billsec ?? '')->format('H:i:s') }}
+                {{ \Carbon\Carbon::createFromFormat('U', $details->billsec ?? '0')->format('H:i:s') }}
             </div>
 
             <div class="col-span-1">
                 <strong class="font-semibold text-gray-900 dark:text-white">Tempo Cobrado:</strong>
-                {{ \Carbon\Carbon::createFromFormat('U', $details->tempo_cobrado ?? '')->format('H:i:s') }}
+                {{ \Carbon\Carbon::createFromFormat('U', $details->tempo_cobrado ?? '0')->format('H:i:s') }}
             </div>
 
             <div class="col-span-1">
                 <strong class="font-semibold text-gray-900 dark:text-white">Valor Compar:</strong> R$
-                {{ number_format($details->valor_compar ?? '0', 2, ',', '.') }}
+                {{ number_format($details->valor_compra ?? '0', 2, ',', '.') }}
             </div>
 
             <div class="col-span-1">
@@ -79,7 +80,7 @@
 
             <div class="col-span-1">
                 <strong class="font-semibold text-gray-900 dark:text-white">Profit:</strong> R$
-                {{ number_format(($details->valor_venda ?? '0.00') - ($details->valor_compar ?? '0.00'), 2, ',', '.') }}
+                {{ number_format(($details->valor_venda ?? '0') - ($details->valor_compra ?? '0'), 2, ',', '.') }}
             </div>
 
 

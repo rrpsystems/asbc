@@ -1,4 +1,4 @@
-<div
+<div wire:poll.3000ms
     class="flex flex-col min-h-[calc(100vh-4rem)] pb-3 pl-6 pr-6 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-100 rounded-md shadow-md shadow-black/5">
     <div class="container flex-grow mx-auto">
         <div class="flex flex-col items-center justify-between my-4 sm:flex-row">
@@ -15,6 +15,9 @@
                     <x-tables.th label="Cliente" column="customer_id" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Numero" column="numero" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Tarifa" column="tarifa" :direction="$direction" :sort="$sort" />
+                    <x-tables.th label="T. Cobra" column="tempo_cobrado" :direction="$direction" :sort="$sort" />
+                    <x-tables.th label="V. Compra" column="valor_compra" :direction="$direction" :sort="$sort" />
+                    <x-tables.th label="V. Venda" column="valor_venda" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Ramal" column="ramal" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Duração" column="billsec" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Desconexão" column="desligamento" :direction="$direction" :sort="$sort" />
@@ -35,15 +38,20 @@
                             <x-tables.td class="py-2">{{ $cdr->numero }}</x-tables.td>
 
                             <x-tables.td class="py-2">{{ $cdr->tarifa }}</x-tables.td>
+                            <x-tables.td
+                                class="py-2">{{ \Carbon\Carbon::createFromFormat('U', $cdr->tempo_cobrado ?? '0')->format('H:i:s') }}</x-tables.td>
+                            <x-tables.td
+                                class="py-2">{{ number_format($cdr->valor_compra ?? '0', 3, ',', '.') }}</x-tables.td>
+                            <x-tables.td
+                                class="py-2">{{ number_format($cdr->valor_venda ?? '0', 3, ',', '.') }}</x-tables.td>
 
                             <x-tables.td class="py-2">{{ $cdr->ramal }}</x-tables.td>
 
                             <x-tables.td class="py-2">
-                                {{ \Carbon\Carbon::createFromFormat('U', $cdr->billsec)->format('H:i:s') }}
+                                {{ \Carbon\Carbon::createFromFormat('U', $cdr->billsec ?? '0')->format('H:i:s') }}
                             </x-tables.td>
 
                             <x-tables.td class="py-2">{{ $cdr->desligamento }}</x-tables.td>
-                            <x-tables.td class="py-2">{{ $cdr->hangup }}</x-tables.td>
 
                             <x-tables.td class="py-2">{{ $cdr->status }}</x-tables.td>
                             <x-tables.td class="py-2" wire:click="openDetails({{ $cdr->id }})"
