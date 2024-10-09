@@ -265,12 +265,7 @@ class Index extends Component
 
     public function render()
     {
-        $franquia = 1000;
-        $utilizado = 100;
 
-        if ($franquia > $utilizado) {
-            dd('Verdadeiro');
-        }
         // dd($this->data_inicial, $this->data_final);
         //$cdrs = Cdr::Where('id', 'like', '%'.$this->search.'%')//with('carrier', 'customer')
         $cdrs = Cdr::with('customer', 'carrier')
