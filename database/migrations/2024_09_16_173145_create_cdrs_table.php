@@ -31,6 +31,8 @@ return new class extends Migration
             $table->string('userfield')->nullable();
             $table->string('prefixo')->nullable();
             $table->string('numero')->nullable();
+            $table->string('numero_discado')->nullable();
+            $table->string('numero_convertido')->nullable();
             $table->string('ramal')->nullable();
             $table->string('recordingfile')->nullable();
             $table->bigInteger('customer_id')->nullable();

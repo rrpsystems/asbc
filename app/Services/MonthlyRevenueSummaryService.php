@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Customer;
 use App\Models\RevenueSummary;
+use Carbon\Carbon;
 
 class MonthlyRevenueSummaryService
 {
@@ -16,11 +17,11 @@ class MonthlyRevenueSummaryService
         $resumo = RevenueSummary::firstOrCreate(
             [
                 'customer_id' => $cdr->customer_id,
-                'mes' => $cdr->calldate->month,
-                'ano' => $cdr->calldate->year,
+                'mes' => Carbon::parse($cdr->calldate)->month, // Obtém o mês,
+                'ano' => Carbon::parse($cdr->calldate)->year, // Obtém o ano
             ],
             [
-                'valor_plano' => 0, // Valor inicial do plano
+                //'valor_plano' => 0, // Valor inicial do plano
                 'minutos_usados' => 0,
                 'minutos_excedentes' => 0,
                 'custo_total' => 0,
