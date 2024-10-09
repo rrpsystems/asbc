@@ -92,6 +92,6 @@ class MonthlyRevenueSummaryService
     protected function controleMinutos($resumo)
     {
         // Retorna true se a franquia foi ultrapassada
-        return $resumo->minutos_usados > $resumo->franquia_minutos;
+        return $resumo->franquia_minutos > $resumo->minutos_usados;
     }
 }
