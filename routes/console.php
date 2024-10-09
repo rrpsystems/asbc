@@ -1,9 +1,11 @@
 <?php
 
 use App\Jobs\CallTariffJob;
+use App\Jobs\MonthlyRevenueJob;
 use App\Models\Cdr;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 
 //use Illuminate\Console\Scheduling\Schedule;
@@ -14,10 +16,16 @@ Artisan::command('inspire', function () {
 
 // Agendamento de tarefas
 Schedule::call(function () {
-    // Cdr::where('status', 'Processada')->chunk(1000, function ($cdrs) {
-    Cdr::chunk(1000, function ($cdrs) {
+    Cdr::where('status', '!=', 'Tarifada')->chunk(1000, function ($cdrs) {
         foreach ($cdrs as $cdr) {
-            CallTariffJob::dispatch($cdr);
+            try {
+                // Despacha os jobs para processamento
+                CallTariffJob::dispatch($cdr);
+                MonthlyRevenueJob::dispatch($cdr);
+            } catch (\Exception $e) {
+                // Loga a exceção para monitoramento
+                Log::error('Erro ao despachar jobs para CDR: '.$cdr->id.' - '.$e->getMessage());
+            }
         }
     });
 })->everyMinute();

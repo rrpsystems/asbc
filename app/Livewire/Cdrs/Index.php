@@ -77,7 +77,7 @@ class Index extends Component
             ['label' => 'Todos', 'value' => 'All'],
             ['label' => 'Pendente', 'value' => 'Pendente'],
             ['label' => 'Processada', 'value' => 'Processada'],
-            ['label' => 'Tarifado', 'value' => 'Tarifado'],
+            ['label' => 'Tarifada', 'value' => 'Tarifada'],
             ['label' => 'Erro', 'value' => 'Erro'],
         ];
         $this->desligamentos = [
@@ -104,7 +104,7 @@ class Index extends Component
         }
         if (in_array('All', $this->stat)) {
             // Se "Todos" for selecionado, substitui por todas as operadoras
-            $this->stat = ['Pendente', 'Tarifado', 'Erro', 'Processada'];
+            $this->stat = ['Pendente', 'Tarifada', 'Erro', 'Processada'];
         }
     }
 
@@ -249,7 +249,7 @@ class Index extends Component
             ];
         }))->toArray();
         $this->desligamento = ['Origem', 'Destino'];
-        $this->stat = ['Pendente', 'Tarifado', 'Processada', 'Erro'];
+        $this->stat = ['Pendente', 'Tarifada', 'Processada', 'Erro'];
 
         $this->filters['data_inicial'] = $this->data_inicial.'T00:00:00';
         $this->filters['data_final'] = $this->data_final.'T23:59:59';
