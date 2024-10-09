@@ -21,7 +21,7 @@ class MonthlyRevenueSummaryService
                 'ano' => Carbon::parse($cdr->calldate)->year,
             ],
             [
-                'franquia_minutos' => $cdr->customer->franquia_minutos,
+                'franquia_minutos' => ($cdr->customer->franquia_minutos * 60),
                 'valor_plano' => $cdr->customer->valor_plano,
                 'minutos_usados' => 0,
                 'custo_total' => $cdr->customer->valor_plano,
