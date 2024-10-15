@@ -8,6 +8,8 @@ use Carbon\Carbon;
 
 class MonthlyRevenueSummaryService
 {
+    private $cobrada = 'N';
+
     public function atualizarResumo($cdr)
     {
         // Busca os dados do customer
@@ -41,11 +43,12 @@ class MonthlyRevenueSummaryService
                 break;
             default:
                 // Opcional: logar ou tratar chamadas de tarifa não reconhecidas
-                return;
                 break;
         }
 
         $resumo->save();
+
+        return $this->cobrada;
     }
 
     protected function calcularFixo($cdr, $resumo)
@@ -60,6 +63,7 @@ class MonthlyRevenueSummaryService
 
     protected function calcularInternacional($cdr, $resumo)
     {
+        $this->cobrada = 'S';
         $resumo->minutos_excedentes_internacional += $cdr->tempo_cobrado;
         $resumo->minutos_excedentes += $cdr->tempo_cobrado;
         $resumo->excedente_internacional += $cdr->valor_venda;
@@ -79,6 +83,7 @@ class MonthlyRevenueSummaryService
             $resumo->minutos_usados += $tempoCobrado;
         } else {
             // Se ultrapassou a franquia
+            $this->cobrada = 'S';
             $resumo->{'minutos_excedentes_'.$tipo} += $tempoCobrado;
             $resumo->minutos_excedentes += $tempoCobrado;
             $resumo->{'excedente_'.$tipo} += $valorVenda;

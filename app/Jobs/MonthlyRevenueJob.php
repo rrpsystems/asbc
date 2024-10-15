@@ -41,10 +41,12 @@ class MonthlyRevenueJob implements ShouldQueue
 
             // Atualiza o status do CDR
             $this->cdr->status = 'Tarifada';
+            $this->cdr->cobrada = $summary;
             $this->cdr->save();
 
         } catch (\Exception $e) {
             // Atualiza o status do CDR em caso de erro
+            $this->cdr->cobrada = $summary;
             $this->cdr->status = 'Erro_Resumo';
             $this->cdr->save();
 

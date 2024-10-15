@@ -39,6 +39,7 @@ return new class extends Migration
             $table->bigInteger('carrier_id')->nullable();
             $table->bigInteger('did_id')->nullable();
             $table->string('cnpj')->nullable();
+            $table->string('cobrada')->nullable();
             $table->integer('tempo_falado')->default(0);
             $table->integer('tempo_cobrado')->default(0);
             $table->decimal('valor_compra', 10, 4)->default(0.00);

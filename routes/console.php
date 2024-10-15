@@ -14,7 +14,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-// Agendamento de tarefas
+// Agendamento de tarefas a cada 10 minutos das 0h a 5h
 Schedule::call(function () {
     Cdr::where('status', '!=', 'Tarifada')->chunk(1000, function ($cdrs) {
         foreach ($cdrs as $cdr) {
@@ -28,7 +28,9 @@ Schedule::call(function () {
             }
         }
     });
-})->everyMinute();
+})->cron('*/10 0-5 * * *');
+
+//->everyMinute();
 
 // Artisan::command('schedule:work', function (Schedule $schedule) {
 //     // Processa as chamadas pendentes a cada 10 minutos

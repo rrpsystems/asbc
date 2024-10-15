@@ -14,7 +14,7 @@ class Cdr extends Model
     protected $fillable = [
         'uniqueid', 'clid', 'src', 'dst', 'dcontext', 'channel', 'dstchannel', 'lastapp', 'lastdata',
         'start', 'answer', 'end', 'duration', 'billsec', 'disposition', 'amaflags', 'accountcode',
-        'userfield', 'recordingfile',
+        'userfield', 'recordingfile', 'cobrada',
     ];
 
     public function getHangupAttribute($value)
