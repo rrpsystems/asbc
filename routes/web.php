@@ -11,6 +11,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/config/rate', 'App\Http\Controllers\Config\RateController@index')->name('config.rate');
 
     Route::get('/report/cdr', 'App\Http\Controllers\Report\CdrController@index')->name('report.cdr');
+    Route::get('/report/invoice', 'App\Http\Controllers\Report\InvoiceController@index')->name('report.invoice');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

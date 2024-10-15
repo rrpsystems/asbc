@@ -114,6 +114,7 @@ class Create extends Component
                 'cep' => $this->cep,
                 'cidade' => $this->cidade,
                 'uf' => $this->uf,
+                'vencimento' => $this->vencimento,
                 'canais' => $this->canais,
                 'valor_plano' => $this->valor_plano,
                 'franquia_minutos' => $this->franquia_minutos,

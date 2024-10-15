@@ -28,6 +28,7 @@ return new class extends Migration
             $table->decimal('valor_excedente', 10, 2)->default(0.00); // Valor por minuto excedente
             $table->date('data_inicio');
             $table->date('data_fim')->nullable();
+            $table->string('vencimento', 2)->default(10);
             $table->string('email')->nullable();
             $table->string('telefone')->nullable();
             $table->string('senha');

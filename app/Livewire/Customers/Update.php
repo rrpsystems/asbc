@@ -81,6 +81,7 @@ class Update extends Component
         $this->cidade = $this->customer->cidade;
         $this->uf = $this->customer->uf;
         $this->cep = $this->customer->cep;
+        $this->vencimento = $this->customer->vencimento;
         $this->canais = $this->customer->canais;
         $this->valor_plano = $this->customer->valor_plano;
         $this->franquia_minutos = $this->customer->franquia_minutos;
@@ -130,6 +131,7 @@ class Update extends Component
                 'cidade' => $this->cidade,
                 'uf' => $this->uf,
                 'canais' => $this->canais,
+                'vencimento' => $this->vencimento,
                 'valor_plano' => $this->valor_plano,
                 'franquia_minutos' => $this->franquia_minutos,
                 'valor_excedente' => $this->valor_excedente,

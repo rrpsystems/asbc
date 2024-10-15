@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,5 +37,10 @@ class RevenueSummary extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function dataVencimento($data)
+    {
+        return Carbon::createFromFormat('d/m/Y', $data)->addMonth()->format('d/m/Y');
     }
 }

@@ -24,6 +24,7 @@ class Customer extends Model
         'valor_plano',
         'franquia_minutos',
         'valor_excedente',
+        'vencimento',
         'data_inicio',
         'data_fim',
         'email',

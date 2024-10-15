@@ -24,7 +24,7 @@
                 <x-sidebar.group-item name="Detalhado" :href="route('orders')" routename="orders" />
                 <x-sidebar.group-item name="Mensal" :href="route('orders')" routename="orders" />
                 <x-sidebar.group-item name="Anual" :href="route('orders')" routename="orders" />
-                <x-sidebar.group-item name="Faturas" :href="route('orders')" routename="orders" />
+                <x-sidebar.group-item name="Faturas" :href="route('report.invoice')" routename="report/invoice" />
                 <x-sidebar.group-item name="Log CDR" :href="route('report.cdr')" routename="report/cdr" />
 
             </x-sidebar.group-menu>
