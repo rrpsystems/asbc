@@ -12,6 +12,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/report/cdr', 'App\Http\Controllers\Report\CdrController@index')->name('report.cdr');
     Route::get('/report/invoice', 'App\Http\Controllers\Report\InvoiceController@index')->name('report.invoice');
+    Route::get('/report/invoice/details/{id}', 'App\Http\Controllers\Report\InvoiceController@details')->name('report.invoice.details');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

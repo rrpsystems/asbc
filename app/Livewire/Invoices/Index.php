@@ -11,6 +11,15 @@ class Index extends Component
 {
     use Table;
 
+    //public $id;
+
+    public function openDetails($id)
+    {
+        //dd($id);
+        redirect()->route('report.invoice.details', $id);
+
+    }
+
     #[On('table-update')]
     public function render()
     {

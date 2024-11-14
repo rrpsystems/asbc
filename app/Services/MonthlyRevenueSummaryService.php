@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class MonthlyRevenueSummaryService
 {
-    private $cobrada = 'N';
+    public $cobrada = 'N';
 
     public function atualizarResumo($cdr)
     {

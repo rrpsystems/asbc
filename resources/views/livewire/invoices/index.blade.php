@@ -1,4 +1,4 @@
-<div wire:poll.3000ms
+<div
     class="flex flex-col min-h-[calc(100vh-4rem)] pb-3 pl-6 pr-6 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-100 rounded-md shadow-md shadow-black/5">
     <div class="container flex-grow mx-auto">
         <div class="flex flex-col items-center justify-between my-4 sm:flex-row">
@@ -31,7 +31,16 @@
                                 class="py-2">{{ number_format($invoice->custo_total, 2, ',', '.') }}</x-tables.td>
                             <x-tables.td
                                 class="py-2">{{ round($invoice->minutos_total / 60, 0, PHP_ROUND_HALF_UP) }}</x-tables.td>
-                            <x-tables.td class="py-0">
+
+                            <x-tables.td class="py-2"
+                                wire:click="
+                            openDetails({{ $invoice->id }})"
+                                wire:key='{{ $invoice->uniqueid }}'>
+                                <x-ui-icon name="eye-check"
+                                    class="cursor-pointer hover:text-gray-100 dark:hover:text-blue-500" />
+                            </x-tables.td>
+
+                            {{-- <x-tables.td class="py-0">
 
                                 <span x-on:click="$dispatch('invoice-update', {{ $invoice }})"
                                     wire:key='update-{{ $invoice->id }}'
@@ -40,14 +49,7 @@
                                     <span class="ml-1">Editar</span>
                                 </span>
 
-                                <span x-on:click="$dispatch('invoice-delete', {{ $invoice }})"
-                                    wire:key='delete-{{ $invoice->id }}'
-                                    class="inline-flex items-center ml-4 font-medium text-red-500 transition cursor-pointer hover:text-red-700 duration- dark:text-red-500">
-                                    <x-ui-icon name="trash" class="w-5 h-5 m-0" />
-                                    <span class="ml-1">Excluir</span>
-                                </span>
-
-                            </x-tables.td>
+                            </x-tables.td> --}}
                         </x-tables.tr>
 
                     @empty
@@ -59,5 +61,5 @@
         </div>
     </div>
     {{ $invoices->links('vendor.livewire.paginate') }}
-    <livewire:invoices.details />
+    {{-- <livewire:invoices.details /> --}}
 </div>
