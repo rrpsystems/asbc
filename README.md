@@ -171,7 +171,21 @@ Acesse: `http://localhost:8000`
 
 ## ⚙️ Configuração
 
-### Conexão com SBC (Asterisk)
+### Instalação e Configuração do Kamailio
+
+Para instalação completa do Kamailio 6 + RTPEngine com integração ao ASBC, consulte:
+
+📖 **[Documentação de Instalação do Kamailio](docs/kamailio/INSTALACAO_KAMAILIO.md)**
+
+Esta documentação inclui:
+- Preparação do ambiente e otimizações de sistema
+- Instalação do PostgreSQL 17
+- Instalação e configuração do Kamailio 6
+- Instalação e configuração do RTPEngine com suporte a G.729
+- Arquivos de configuração prontos para uso
+- Guia de troubleshooting
+
+### Conexão com SBC (Asterisk/Kamailio)
 
 Adicione a conexão do SBC no `.env`:
 
