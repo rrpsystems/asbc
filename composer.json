@@ -11,6 +11,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
+        "lucascudo/laravel-pt-br-localization": "3.0",
         "maatwebsite/excel": "^3.1",
         "tallstackui/tallstackui": "^2.0"
     },
@@ -18,7 +19,6 @@
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
-        "lucascudo/laravel-pt-br-localization": "3.0",
         "mockery/mockery": "^1.6"
     },
     "autoload": {
