@@ -5,7 +5,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat&logo=postgresql)
 ![Livewire](https://img.shields.io/badge/Livewire-3.x-FB70A9?style=flat&logo=livewire)
 
-Sistema completo de gerenciamento e faturamento para Session Border Controllers (SBC) com integração Asterisk, tarifação em tempo real, gestão de revendas e relatórios avançados.
+Sistema completo de gerenciamento e faturamento para Session Border Controllers (SBC) com integração Asterisk ou kamailio, tarifação em tempo real, gestão de revendas e relatórios avançados.
 
 ## 📋 Índice
 
