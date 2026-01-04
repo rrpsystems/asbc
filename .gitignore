@@ -28,7 +28,7 @@ storage/imports/*.sql
 storage/imports/*.csv
 
 # Laravel cache files
-/bootstrap/cache/*.php
+/bootstrap/cache/*
 !/bootstrap/cache/.gitignore
 /storage/framework/cache/*
 !/storage/framework/cache/.gitignore
