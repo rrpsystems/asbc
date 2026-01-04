@@ -81,6 +81,13 @@
             </div>
         </div>
 
+        <!-- Search -->
+        <div class="mb-6">
+            <input type="text" wire:model.live.debounce.300ms="search"
+                   placeholder="Ramal, Nome, Email"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
+        </div>
+
         {{-- Filter Modal --}}
         <x-ui-modal wire="filterModal" size="xl">
             <x-slot:title>
