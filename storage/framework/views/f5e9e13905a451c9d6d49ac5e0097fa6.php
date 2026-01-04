@@ -1,0 +1,1 @@
+$wire.entangle('contrato')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/9311d4e16dc32a99baaea40d2ee0c2b0.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+$wire.entangle('tarifa')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/50232e7a59c0faea17a8549b034e2651.blade.php ENDPATH**/ ?>

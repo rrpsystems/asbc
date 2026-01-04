@@ -1,0 +1,1 @@
+$wire.entangle('desligamento')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/25d8f3bca35c39cb2659803290822bab.blade.php ENDPATH**/ ?>

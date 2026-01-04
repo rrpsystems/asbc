@@ -1,0 +1,1 @@
+$wire.entangle('valor_fixo_plano')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/1aa6199774140652b03da5ee48464e6e.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+$wire.entangle('proxy_padrao')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/546334fd00538d978c84b043f696bfa8.blade.php ENDPATH**/ ?>

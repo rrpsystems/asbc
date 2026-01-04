@@ -1,0 +1,1 @@
+$wire.entangle('razao_social')

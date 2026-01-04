@@ -1,0 +1,1 @@
+$wire.entangle('valor_fixo_chamada')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/2d288e8e57f4f124b74018648735bc67.blade.php ENDPATH**/ ?>

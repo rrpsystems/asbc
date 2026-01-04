@@ -1,4 +1,4 @@
-<x-ui-modal title="Detalhes da Chamada" size="4xl" persistent wire>
+<x-ui-modal title="Detalhes da Chamada" size="4xl" persistent wire="detailsModal">
     <div class="space-y-3 min-h-72">
         <div class="grid grid-cols-3 gap-3">
 
@@ -188,7 +188,7 @@
     <div class="grid grid-cols-3 gap-3">
 
         <div class="col-span-1">
-            <x-ui-number centralized min="1" max="30" label="Quantidade *" icon="phone-off"
+            <x-ui-number centralized min="1" max="30" label="Quantidade *" icon="phone-x-mark"
                 wire:model='quantidade' />
         </div>
         <div class="col-span-1">
@@ -198,7 +198,7 @@
 
 
         <div class="col-span-2">
-            <x-ui-input label="Numero" icon="dialpad" wire:model.live='did' />
+            <x-ui-input label="Numero" icon="phone" wire:model.live='did' />
         </div>
 
         <div class="col-span-1 pt-8 pl-3">
@@ -206,16 +206,20 @@
         </div>
 
         <div class="col-span-3">
-            <div class="w-full">
-                <x-ui-select.styled label="Cliente *" :options=$customers select="label:label|value:value" searchable
-                    wire:model.live='customer_id' />
-            </div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Cliente *</label>
+            <select wire:model.live="customer_id" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                @foreach($customers as $customer)
+                    <option value="{{ $customer['value'] }}">{{ $customer['label'] }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="col-span-3">
-            <div class="w-full">
-                <x-ui-select.styled label="Operadora *" :options=$carriers select="label:label|value:value" searchable
-                    wire:model.live='carrier_id' />
-            </div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Operadora *</label>
+            <select wire:model.live="carrier_id" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                @foreach($carriers as $carrier)
+                    <option value="{{ $carrier['value'] }}">{{ $carrier['label'] }}</option>
+                @endforeach
+            </select>
         </div>
 
         <div class="relative flex items-center justify-center col-span-3">
@@ -227,7 +231,7 @@
         </div>
 
         <div class="col-span-3">
-            <x-ui-input label="Tronco-Chave *" icon="route" wire:model.live='encaminhamento' />
+            <x-ui-input label="Tronco-Chave *" icon="arrow-trending-up" wire:model.live='encaminhamento' />
         </div>
 
         <div class="col-span-3">

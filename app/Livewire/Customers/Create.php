@@ -57,6 +57,18 @@ class Create extends Component
 
     public $ativo = true;
 
+    public $proxy_padrao;
+
+    public $porta_padrao = 5060;
+
+    public $bloqueio_entrada = false;
+
+    public $bloqueio_saida = false;
+
+    public $motivo_bloqueio;
+
+    public $reseller_id;
+
     public $slide = false;
 
     public function mount()
@@ -125,6 +137,13 @@ class Create extends Component
                 'telefone' => $this->telefone,
                 'senha' => $this->password,
                 'ativo' => $this->ativo,
+                'proxy_padrao' => $this->proxy_padrao,
+                'porta_padrao' => $this->porta_padrao,
+                'bloqueio_entrada' => $this->bloqueio_entrada,
+                'bloqueio_saida' => $this->bloqueio_saida,
+                'motivo_bloqueio' => $this->motivo_bloqueio,
+                'data_bloqueio' => ($this->bloqueio_entrada || $this->bloqueio_saida) ? now() : null,
+                'reseller_id' => $this->reseller_id,
             ]);
 
             // Criação do User
@@ -156,6 +175,7 @@ class Create extends Component
     #[On('customer-create')]
     public function create()
     {
+        $this->password = 'cliente';
         $this->slide = true;
     }
 
@@ -164,7 +184,7 @@ class Create extends Component
         $this->dispatch('table-update');
         $this->reset(['contrato', 'cnpj', 'razaosocial', 'nomefantasia', 'endereco', 'numero', 'complemento', 'cidade',
             'uf', 'cep', 'canais', 'valor_plano', 'franquia_minutos', 'valor_excedente', 'data_inicio', 'data_fim', 'email',
-            'telefone', 'password', ]);
+            'telefone', 'password', 'proxy_padrao', 'porta_padrao', 'bloqueio_entrada', 'bloqueio_saida', 'motivo_bloqueio']);
         $this->slide = false;
     }
 
@@ -226,6 +246,12 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.customers.create');
+        $resellers = \App\Models\Reseller::where('ativo', true)
+            ->orderBy('nome')
+            ->get();
+
+        return view('livewire.customers.create', [
+            'resellers' => $resellers,
+        ]);
     }
 }

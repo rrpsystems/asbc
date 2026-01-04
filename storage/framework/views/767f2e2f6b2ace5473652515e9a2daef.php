@@ -1,0 +1,1 @@
+$wire.entangle('ativo')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/c7fac96cef3c37c1123b8c0a6170bfe7.blade.php ENDPATH**/ ?>

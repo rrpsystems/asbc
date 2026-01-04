@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Users;
 
+use App\Enums\UserRole;
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
@@ -22,6 +24,8 @@ class Update extends Component
 
     public $password_confirmation;
 
+    public $customer_id;
+
     public $user;
 
     public $slide = false;
@@ -36,7 +40,8 @@ class Update extends Component
         $this->user = User::find($id);
         $this->name = $this->user->name;
         $this->email = $this->user->email;
-        $this->rule = $this->user->rule;
+        $this->rule = $this->user->rule->value;
+        $this->customer_id = $this->user->customer_id;
         $this->ativo = $this->user->ativo;
         $this->slide = true;
     }
@@ -54,6 +59,7 @@ class Update extends Component
             'name' => $this->name,
             'email' => $this->email,
             'rule' => $this->rule,
+            'customer_id' => $this->customer_id,
             'ativo' => $this->ativo,
         ];
 
@@ -79,12 +85,43 @@ class Update extends Component
     {
         $this->resetValidation();
         $this->dispatch('table-update');
-        $this->reset(['name', 'rule', 'ativo', 'email', 'password', 'password_confirmation']);
+        $this->reset(['name', 'rule', 'ativo', 'email', 'password', 'password_confirmation', 'customer_id']);
         $this->slide = false;
+    }
+
+    public function getRoles()
+    {
+        return collect(UserRole::cases())->map(function($role) {
+            return [
+                'value' => $role->value,
+                'label' => $role->label(),
+            ];
+        })->toArray();
+    }
+
+    public function getCustomers()
+    {
+        return Customer::where('ativo', true)
+            ->orderBy('nomefantasia')
+            ->get()
+            ->map(function($customer) {
+                return [
+                    'value' => $customer->id,
+                    'label' => $customer->nomefantasia ?? $customer->razaosocial ?? 'Cliente #' . $customer->id,
+                ];
+            })
+            ->filter(function($customer) {
+                return !empty($customer['label']);
+            })
+            ->values()
+            ->toArray();
     }
 
     public function render()
     {
-        return view('livewire.users.update');
+        return view('livewire.users.update', [
+            'roles' => $this->getRoles(),
+            'customers' => $this->getCustomers(),
+        ]);
     }
 }

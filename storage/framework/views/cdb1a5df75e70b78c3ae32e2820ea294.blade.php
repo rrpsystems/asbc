@@ -1,0 +1,1 @@
+$wire.entangle('valor_custo_unitario')

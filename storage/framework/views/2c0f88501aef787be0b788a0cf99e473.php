@@ -1,0 +1,1 @@
+$wire.entangle('stat')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/6cf6a5c8b14d97e9c097cfe01007910d.blade.php ENDPATH**/ ?>

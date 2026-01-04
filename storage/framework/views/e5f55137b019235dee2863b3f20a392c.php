@@ -1,0 +1,1 @@
+$wire.entangle('bloqueio_entrada')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/4a00d6a7a259bf267c00cfe3966b59e2.blade.php ENDPATH**/ ?>

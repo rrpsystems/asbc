@@ -61,6 +61,18 @@ class Update extends Component
 
     public $ativo = true;
 
+    public $proxy_padrao;
+
+    public $porta_padrao = 5060;
+
+    public $bloqueio_entrada = false;
+
+    public $bloqueio_saida = false;
+
+    public $motivo_bloqueio;
+
+    public $reseller_id;
+
     public $slide = false;
 
     #[On('customer-update')]
@@ -90,7 +102,14 @@ class Update extends Component
         $this->data_fim = $this->customer->data_fim;
         $this->email = $this->customer->email;
         $this->telefone = $this->customer->telefone;
+        $this->password = $this->customer->senha;
         $this->ativo = $this->customer->ativo;
+        $this->proxy_padrao = $this->customer->proxy_padrao;
+        $this->porta_padrao = $this->customer->porta_padrao;
+        $this->bloqueio_entrada = $this->customer->bloqueio_entrada;
+        $this->bloqueio_saida = $this->customer->bloqueio_saida;
+        $this->motivo_bloqueio = $this->customer->motivo_bloqueio;
+        $this->reseller_id = $this->customer->reseller_id;
         $this->slide = true;
         $this->apresentationData();
 
@@ -100,7 +119,7 @@ class Update extends Component
     {
         $this->normalizeData();
         $this->validate([
-            'contrato' => 'required|digits_between:4,10|unique:customers,id,'.$this->old_contrato,
+            'contrato' => 'required|digits_between:4,10|unique:customers,id,' . $this->old_contrato,
             'cnpj' => 'required|digits:14',
             'razaosocial' => 'required|string|min:3',
             'endereco' => 'required|string|min:3',
@@ -141,11 +160,18 @@ class Update extends Component
                 'telefone' => $this->telefone,
                 'senha' => $this->password,
                 'ativo' => $this->ativo,
+                'proxy_padrao' => $this->proxy_padrao,
+                'porta_padrao' => $this->porta_padrao,
+                'bloqueio_entrada' => $this->bloqueio_entrada,
+                'bloqueio_saida' => $this->bloqueio_saida,
+                'motivo_bloqueio' => $this->motivo_bloqueio,
+                'data_bloqueio' => ($this->bloqueio_entrada || $this->bloqueio_saida) ? now() : null,
+                'reseller_id' => $this->reseller_id,
             ]);
 
             // Criação do User
             User::updateOrCreate(
-                ['email' => 'cliente@'.$this->cnpj],
+                ['email' => 'cliente@' . $this->cnpj],
                 [
                     'customer_id' => $this->contrato, // Use o ID do Customer recém-criado
                     //'name' => $this->razaosocial,
@@ -162,7 +188,7 @@ class Update extends Component
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack(); // Reverte todas as operações se algo falhar
-            Log::error('Erro ao criar usuário ou cliente: '.$e->getMessage()); // Registra o erro
+            Log::error('Erro ao criar usuário ou cliente: ' . $e->getMessage()); // Registra o erro
             $this->slide = false;
             $this->toast()->error('Erro ao criar o Usuário ou Cliente!')->send();
         }
@@ -209,14 +235,43 @@ class Update extends Component
     {
         $this->resetValidation();
         $this->dispatch('table-update');
-        $this->reset(['contrato', 'cnpj', 'razaosocial', 'nomefantasia', 'endereco', 'numero', 'complemento', 'cidade',
-            'uf', 'cep', 'canais', 'valor_plano', 'franquia_minutos', 'valor_excedente', 'data_inicio', 'data_fim', 'email',
-            'telefone', 'password', ]);
+        $this->reset([
+            'contrato',
+            'cnpj',
+            'razaosocial',
+            'nomefantasia',
+            'endereco',
+            'numero',
+            'complemento',
+            'cidade',
+            'uf',
+            'cep',
+            'canais',
+            'valor_plano',
+            'franquia_minutos',
+            'valor_excedente',
+            'data_inicio',
+            'data_fim',
+            'email',
+            'telefone',
+            'password',
+            'proxy_padrao',
+            'porta_padrao',
+            'bloqueio_entrada',
+            'bloqueio_saida',
+            'motivo_bloqueio'
+        ]);
         $this->slide = false;
     }
 
     public function render()
     {
-        return view('livewire.customers.update');
+        $resellers = \App\Models\Reseller::where('ativo', true)
+            ->orderBy('nome')
+            ->get();
+
+        return view('livewire.customers.update', [
+            'resellers' => $resellers,
+        ]);
     }
 }

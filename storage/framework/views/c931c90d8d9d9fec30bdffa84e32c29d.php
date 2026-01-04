@@ -1,0 +1,1 @@
+$wire.entangle('valor_fixo_did')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/1b536bc2ad0f95a6614d8da47f13d9ce.blade.php ENDPATH**/ ?>

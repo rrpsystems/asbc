@@ -1,0 +1,1 @@
+$wire.entangle('search').live<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/810f892dcfb074e8dc5a7d1ebc13e5a0.blade.php ENDPATH**/ ?>

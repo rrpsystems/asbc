@@ -1,0 +1,1 @@
+$wire.entangle('motivo_bloqueio')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/e68e8c6a3d599a96ca5aee67e39a1d5c.blade.php ENDPATH**/ ?>

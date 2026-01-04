@@ -1,0 +1,1 @@
+$wire.entangle('data_final')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/a2ebb48d45556128fc24d2cb05c02848.blade.php ENDPATH**/ ?>

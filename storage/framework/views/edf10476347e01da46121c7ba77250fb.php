@@ -1,0 +1,1 @@
+$wire.entangle('franquia_compartilhada')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/5be4f8c194544dd7ac9b8182efbd4bf0.blade.php ENDPATH**/ ?>

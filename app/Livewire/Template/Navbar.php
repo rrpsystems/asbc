@@ -9,22 +9,12 @@ use Illuminate\Support\Facades\Session;
 
 class Navbar extends Component
 {
-
-    public $sideToggle = true;
     public $bradcrumb = [];
 
     #[On('bradcrumb')]
     public function changeBradcrumb($menu)
     {
         $this->bradcrumb = $menu;
-    }
-    #[On('close-sidebar')]
-    public function toggleSidebar()
-    {
-        $this->sideToggle = !$this->sideToggle;
-        // Emitir evento para o componente Sidebar
-        $this->dispatch('toggleSidebar', $this->sideToggle);
-        $this->dispatch('toggle-sidebar', $this->sideToggle);
     }
 
     public function logout(Logout $logout): void

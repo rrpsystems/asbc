@@ -1,0 +1,1 @@
+$wire.entangle('operadora')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/b619e8636cd1173c3ad1e1361d0e8a64.blade.php ENDPATH**/ ?>

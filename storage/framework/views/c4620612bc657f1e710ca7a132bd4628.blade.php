@@ -1,0 +1,1 @@
+$wire.entangle('data_ativacao')

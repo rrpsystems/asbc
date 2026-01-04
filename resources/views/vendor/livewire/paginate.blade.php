@@ -15,7 +15,12 @@
             <div class="mb-2 text-sm text-gray-700 dark:text-gray-400 sm:mb-0">
                 <label class="inline-flex items-center cursor-pointer">
                     <span class="block">
-                        <x-ui-select.native :options="[8, 15, 30, 50]" wire:model.live='perPage' />
+                        <select wire:model.live="perPage" class="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm pl-3 pr-8 py-1.5 focus:outline-none focus:ring-2 focus:ring-cyan-500 appearance-auto">
+                            <option value="8">8</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
                     </span>
                     <span
                         class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">{!! __('Itens') !!}</span>
@@ -145,7 +150,12 @@
             <div class="mb-2 text-sm text-gray-700 dark:text-gray-400 sm:mb-0">
                 <label class="inline-flex items-center cursor-pointer">
                     <span class="block">
-                        <x-ui-select.native :options="[8, 15, 30, 50]" wire:model.live='perPage' />
+                        <select wire:model.live="perPage" class="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm pl-3 pr-8 py-1.5 focus:outline-none focus:ring-2 focus:ring-cyan-500 appearance-auto">
+                            <option value="8">8</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
                     </span>
                     <span
                         class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">{!! __('Itens') !!}</span>

@@ -1,0 +1,1 @@
+$wire.entangle('porta_padrao')

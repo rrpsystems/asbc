@@ -1,0 +1,1 @@
+$wire.entangle('markup_produtos')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/98e263eb32228528f827da410c3de638.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+$wire.entangle('uf')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/6e068f4444ce31f7b0d1d276247fcf95.blade.php ENDPATH**/ ?>

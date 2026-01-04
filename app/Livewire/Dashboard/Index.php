@@ -3,7 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\Cdr;
-use App\Models\Rate;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class Index extends Component
@@ -14,119 +14,314 @@ class Index extends Component
 
     public $data2;
 
-    public $teste;
+    public $custoTotal;
 
-    public $tempo;
+    public $recentCalls;
 
-    public $valor;
+    public $topDestinos;
 
-    protected function calcularTarifa($cdr)
+    public $callsByType;
+
+    public $maxChannelsInfo; // Pico de canais com hora
+
+    public $callsPerHour; // Distribuição de chamadas por hora com pico
+
+    // Métricas de hoje
+    public $todayCost;
+    public $todayCalls;
+    public $todayDuration;
+
+    // Filtro de período: 'hoje', 'semana', 'mes'
+    public $periodoFiltro = 'mes';
+
+    /**
+     * Altera o período do filtro
+     */
+    public function setPeriodo($periodo)
     {
-        // Busca a tarifa com base no prefixo, operadora (carrier_id) e tipo de chamada (tarifa)
-        $rate = Rate::where(function ($query) use ($cdr) {
-            $query->whereRaw('? LIKE prefixo || \'%\'', [$cdr->numero])
-                ->orWhereNull('prefixo');
-        })
-            ->where('carrier_id', $cdr->carrier_id)
-            ->where('tarifa', $cdr->tarifa)
-            ->where('ativo', true)
-            ->orderByRaw('LENGTH(prefixo) DESC NULLS LAST')
-            ->first();
-
-        if (! $rate) {
-            //$rate->status = 'Erro';
-            throw new \Exception('Tarifa não encontrada para a chamada.');
-        }
-
-        if ($rate->venda == 0) {
-            $tempoCobrado = 0;
-        } else {
-            // Calcula o tempo cobrado com base no tempoinicial, tempominimo, e incremento
-            $tempoCobrado = $this->calcularTempoCobrado($cdr->billsec, $rate->tempoinicial, $rate->tempominimo, $rate->incremento);
-        }
-
-        // Calcula os valores de compra e venda
-        $valorCompra = $this->calcularValor($tempoCobrado, $rate->compra, $rate->vconexao);
-        $valorVenda = $this->calcularValor($tempoCobrado, $rate->venda, $rate->vconexao);
-
-        return [
-            'compra' => $valorCompra,
-            'venda' => $valorVenda,
-        ];
+        $this->periodoFiltro = $periodo;
     }
 
-    protected function calcularValor($tempoCobrado, $valorTarifa, $valorConexao)
+    /**
+     * Retorna as datas de início e fim baseado no filtro
+     */
+    protected function getPeriodoDatas()
     {
-        // O valor total inclui a conexão e o tempo tarifado
-        return ($tempoCobrado * ($valorTarifa / 60)) + $valorConexao;
+        return match($this->periodoFiltro) {
+            'hoje' => [
+                'inicio' => now()->startOfDay()->format('Y-m-d H:i:s'),
+                'fim' => now()->format('Y-m-d H:i:s'),
+                'label' => 'Hoje',
+            ],
+            'semana' => [
+                'inicio' => now()->subDays(6)->startOfDay()->format('Y-m-d H:i:s'),
+                'fim' => now()->format('Y-m-d H:i:s'),
+                'label' => 'Últimos 7 Dias',
+            ],
+            'mes' => [
+                'inicio' => now()->startOfMonth()->format('Y-m-d H:i:s'),
+                'fim' => now()->format('Y-m-d H:i:s'),
+                'label' => 'Este Mês',
+            ],
+        };
     }
 
-    protected function calcularTempoCobrado($tempoFalado, $tempoinicial, $tempominimo, $incremento)
+    /**
+     * Limpa o cache e força atualização
+     */
+    public function refresh()
     {
-        // Ajusta o tempo inicial se for maior que o falado
-        if ($tempoFalado <= $tempoinicial) {
-            return 0;
-        }
+        $month = now()->format('Y-m');
 
-        // Ajusta para o tempo mínimo
-        if ($tempoFalado < $tempominimo) {
-            return $tempominimo;
-        }
+        // Limpa todos os caches do dashboard mensal
+        Cache::forget("dashboard:max_customer_channels:{$month}");
+        Cache::forget("dashboard:max_calls:{$month}");
+        Cache::forget("dashboard:max_channels:{$month}");
+        Cache::forget("dashboard:total_cost:{$month}");
+        Cache::forget("dashboard:top_destinos:{$month}:10");
+        Cache::forget("dashboard:calls_by_type:{$month}");
 
-        // Calcula o tempo com base no incremento
-        $tempoExtra = $tempoFalado - $tempominimo;
-        $incrementos = ceil($tempoExtra / $incremento);
+        // Força limpeza completa do cache de tipos
+        Cache::flush();
 
-        return $tempominimo + ($incrementos * $incremento);
+        // Limpa caches do dia (Resumo de Hoje)
+        $today = now()->format('Y-m-d');
+        Cache::forget("dashboard:recent_calls:all:10");
+        Cache::forget("dashboard:today_cost:{$today}");
+        Cache::forget("dashboard:today_calls:{$today}");
+        Cache::forget("dashboard:today_duration:{$today}");
+        Cache::forget("dashboard:calls_per_hour:{$month}");
+
+        // Força re-renderização
+        $this->render();
     }
 
-    protected function maxCustomerChannels($date)
+    protected function maxCustomerChannels($startDate, $endDate)
     {
-        $results = Cdr::with('customer')->selectRaw('customer_id, MAX(customer_channels) as max_customer_channels')
-            ->whereDate('calldate', $date)
-            ->groupBy('customer_id')
-            ->orderBy('max_customer_channels', 'desc')
-            ->get();
+        $month = now()->format('Y-m');
+        $cacheKey = "dashboard:max_customer_channels:{$this->periodoFiltro}:{$month}";
 
-        return $results;
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
+            return Cdr::with('customer')->selectRaw('customer_id, MAX(customer_channels) as max_customer_channels')
+                ->whereBetween('calldate', [$startDate, $endDate])
+                ->groupBy('customer_id')
+                ->orderBy('max_customer_channels', 'desc')
+                ->get();
+        });
     }
 
-    protected function maxCalls($date)
+    protected function maxCalls($startDate, $endDate)
     {
-        $results = Cdr::with('customer')->selectRaw('customer_id, COUNT(customer_id) as max_customer_calls, SUM(billsec) as total_billsec')
-            ->whereDate('calldate', $date)
-            ->groupBy('customer_id')
-            ->orderBy('max_customer_calls', 'desc')
-            ->get();
+        $month = now()->format('Y-m');
+        $cacheKey = "dashboard:max_calls:{$this->periodoFiltro}:{$month}";
 
-        return $results;
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
+            return Cdr::with('customer')->selectRaw('customer_id, COUNT(customer_id) as max_customer_calls, SUM(billsec) as total_billsec')
+                ->whereBetween('calldate', [$startDate, $endDate])
+                ->groupBy('customer_id')
+                ->orderBy('max_customer_calls', 'desc')
+                ->get();
+        });
     }
 
-    protected function maxChannels($date)
+    protected function maxChannels($startDate, $endDate)
     {
+        $month = now()->format('Y-m');
+        $cacheKey = "dashboard:max_channels:{$this->periodoFiltro}:{$month}";
 
-        $results = Cdr::selectRaw('DATE_TRUNC(\'hour\', calldate) as hour, MAX(carrier_channels) as max_carrier_channels, MAX(customer_channels) as max_customer_channels')
-            ->whereDate('calldate', $date)
-            ->groupBy('hour')
-            ->orderBy('hour')
-            ->get();
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
+            return Cdr::selectRaw('
+                EXTRACT(HOUR FROM calldate)::integer as hour_of_day,
+                MAX(carrier_channels) as max_carrier_channels,
+                MAX(customer_channels) as max_customer_channels,
+                COUNT(*) as total_calls
+            ')
+                ->whereBetween('calldate', [$startDate, $endDate])
+                ->groupBy('hour_of_day')
+                ->orderBy('hour_of_day')
+                ->get();
+        });
+    }
 
-        return $results;
+    protected function calculateTotalCost($startDate, $endDate)
+    {
+        $month = now()->format('Y-m');
+        $cacheKey = "dashboard:total_cost:{$this->periodoFiltro}:{$month}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
+            // Usa o valor já calculado e armazenado no banco
+            // Muito mais eficiente do que recalcular todas as tarifas
+            return Cdr::whereBetween('calldate', [$startDate, $endDate])
+                ->where('disposition', 'ANSWERED')
+                ->sum('valor_compra');
+        });
+    }
+
+    protected function getRecentCalls($limit = 10)
+    {
+        $cacheKey = "dashboard:recent_calls:all:{$limit}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($limit) {
+            return Cdr::with(['customer', 'carrier'])
+                ->orderBy('calldate', 'desc')
+                ->limit($limit)
+                ->get();
+        });
+    }
+
+    protected function getTopDestinos($startDate, $endDate, $limit = 10)
+    {
+        $month = now()->format('Y-m');
+        $cacheKey = "dashboard:top_destinos:{$this->periodoFiltro}:{$month}:{$limit}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate, $limit) {
+            return Cdr::selectRaw('numero, COUNT(*) as total_calls, SUM(billsec) as total_duration')
+                ->whereBetween('calldate', [$startDate, $endDate])
+                ->where('disposition', 'ANSWERED')
+                ->groupBy('numero')
+                ->orderBy('total_calls', 'desc')
+                ->limit($limit)
+                ->get();
+        });
+    }
+
+    protected function getCallsByType($startDate, $endDate)
+    {
+        $month = now()->format('Y-m');
+        $cacheKey = "dashboard:calls_by_type:{$this->periodoFiltro}:{$month}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
+            // Usa o campo 'tarifa' que já vem da tabela de rates
+            // Isso inclui: Fixo, Movel, Internacional, Entrada, e outros tipos customizados
+            $results = Cdr::selectRaw('
+                COALESCE(tarifa, \'Outros\') as tipo,
+                COUNT(*) as total
+            ')
+                ->whereBetween('calldate', [$startDate, $endDate])
+                ->where('disposition', 'ANSWERED')
+                ->groupBy('tarifa')
+                ->orderByRaw('COUNT(*) DESC')
+                ->get();
+
+            return $results;
+        });
+    }
+
+    // Métricas de Hoje
+    protected function getTodayCost($date)
+    {
+        $cacheKey = "dashboard:today_cost:{$date}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($date) {
+            return Cdr::whereDate('calldate', $date)
+                ->where('calldate', '<=', now())
+                ->where('disposition', 'ANSWERED')
+                ->sum('valor_compra');
+        });
+    }
+
+    protected function getTodayCalls($date)
+    {
+        $cacheKey = "dashboard:today_calls:{$date}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($date) {
+            return Cdr::whereDate('calldate', $date)
+                ->where('calldate', '<=', now())
+                ->where('disposition', 'ANSWERED')
+                ->count();
+        });
+    }
+
+    protected function getTodayDuration($date)
+    {
+        $cacheKey = "dashboard:today_duration:{$date}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($date) {
+            return Cdr::whereDate('calldate', $date)
+                ->where('calldate', '<=', now())
+                ->where('disposition', 'ANSWERED')
+                ->sum('billsec');
+        });
+    }
+
+    /**
+     * Retorna distribuição de chamadas por hora do dia
+     * com identificação do pico de chamadas
+     */
+    protected function getCallsPerHour($startDate, $endDate)
+    {
+        $month = now()->format('Y-m');
+        $cacheKey = "dashboard:calls_per_hour:{$this->periodoFiltro}:{$month}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
+            $hourlyData = Cdr::selectRaw('
+                EXTRACT(HOUR FROM calldate)::integer as hour,
+                COUNT(*) as total_calls,
+                COUNT(CASE WHEN disposition = \'ANSWERED\' THEN 1 END) as answered_calls,
+                COUNT(CASE WHEN disposition != \'ANSWERED\' THEN 1 END) as failed_calls,
+                SUM(billsec) as total_duration,
+                AVG(billsec) as avg_duration
+            ')
+                ->whereBetween('calldate', [$startDate, $endDate])
+                ->groupBy('hour')
+                ->orderBy('hour')
+                ->get();
+
+            // Encontra o pico
+            $peakHour = $hourlyData->sortByDesc('total_calls')->first();
+
+            return [
+                'hourly' => $hourlyData,
+                'peak' => [
+                    'hour' => $peakHour ? sprintf('%02d:00', $peakHour->hour) : '--:--',
+                    'hour_range' => $peakHour ? sprintf('%02d:00 - %02d:59', $peakHour->hour, $peakHour->hour) : '--',
+                    'calls' => $peakHour->total_calls ?? 0,
+                    'answered' => $peakHour->answered_calls ?? 0,
+                    'failed' => $peakHour->failed_calls ?? 0,
+                ],
+            ];
+        });
     }
 
     public function render()
     {
+        // Define período baseado no filtro
+        $periodo = $this->getPeriodoDatas();
+        $startDate = $periodo['inicio'];
+        $endDate = $periodo['fim'];
+        $periodoLabel = $periodo['label'];
+        $today = now()->format('Y-m-d');
 
-        $this->data = $this->maxChannels('2024-09-30');
-        $this->data1 = $this->maxCustomerChannels('2024-09-30');
-        $this->data2 = $this->maxCalls('2024-09-30');
-        // dd($this->data2);
-        //dd($this->data);
-        //dd($this->calcularTarifa(Cdr::where('tarifa', 'Movel')->orderBy('billsec', 'desc')->first()));
-        //$this->teste = $this->calcularValor(1, 1, 1);
-        $this->tempo = $this->calcularTempoCobrado(55, 0, 30, 6);
-        $this->valor = $this->calcularValor($this->tempo, 1.00, 0.00);
+        // Métricas do período selecionado
+        $this->data = $this->maxChannels($startDate, $endDate);
+        $this->data1 = $this->maxCustomerChannels($startDate, $endDate);
+        $this->data2 = $this->maxCalls($startDate, $endDate);
+        $this->custoTotal = $this->calculateTotalCost($startDate, $endDate);
+        $this->topDestinos = $this->getTopDestinos($startDate, $endDate);
+        $this->callsByType = $this->getCallsByType($startDate, $endDate);
 
-        return view('livewire.dashboard.index');
+        // Últimas chamadas (10 mais recentes do banco, independente de data)
+        $this->recentCalls = $this->getRecentCalls();
+
+        // Métricas de hoje (para seção "Resumo de Hoje")
+        $this->todayCost = $this->getTodayCost($today);
+        $this->todayCalls = $this->getTodayCalls($today);
+        $this->todayDuration = $this->getTodayDuration($today);
+
+        // Distribuição de chamadas por hora com pico
+        $this->callsPerHour = $this->getCallsPerHour($startDate, $endDate);
+
+        // Calcula pico de canais do período (agora por faixa horária)
+        $maxChannels = $this->data->max('max_carrier_channels');
+        $maxHour = $this->data->where('max_carrier_channels', $maxChannels)->first();
+
+        $this->maxChannelsInfo = [
+            'max' => $maxChannels ?? 0,
+            'hour' => $maxHour ? sprintf('%02dh', $maxHour->hour_of_day) : '--h'
+        ];
+
+        return view('livewire.dashboard.index', [
+            'periodoLabel' => $periodoLabel,
+        ]);
     }
 }

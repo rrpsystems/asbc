@@ -1,0 +1,1 @@
+$wire.entangle('canais')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/c45a6b8cbde242b199cc14ceed3985d9.blade.php ENDPATH**/ ?>

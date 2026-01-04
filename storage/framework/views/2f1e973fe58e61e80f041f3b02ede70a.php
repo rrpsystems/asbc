@@ -1,0 +1,1 @@
+$wire.entangle('franquia_valor_nacional')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/d338e9ba537b69a578ba25f6f69be5d4.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+$wire.entangle('ramal')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/cd5ae279ff5094254cc2b21112acf8f0.blade.php ENDPATH**/ ?>

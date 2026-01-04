@@ -1,0 +1,1 @@
+$wire.entangle('markup_planos')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/891e25b2ae79f6d2d752d1b3e947865c.blade.php ENDPATH**/ ?>

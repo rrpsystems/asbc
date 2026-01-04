@@ -1,105 +1,99 @@
 <div>
-    {{-- <div> --}}
-    <x-ui-slide persistent size="lg" id="slade-filter" left wire>
-
+    <x-ui-modal size="4xl" wire="filterModal" persistent>
         <x-slot:title>
-            <span class="text-2xl font-bold">
-                <x-ui-button color="pink" sm position="left" wire:click="resetFilter">
+            <div class="flex items-center justify-between">
+                <span class="text-xl font-bold">Filtros CDR</span>
+                <x-ui-button color="pink" sm wire:click="resetFilter">
                     <x-slot:left>
-                        <x-ui-icon icon="recycle" />
+                        <x-ui-icon icon="arrow-path" class="w-4 h-4" />
                     </x-slot:left>
-                    Limpar
+                    Limpar Filtros
                 </x-ui-button>
-                - Filtros CDR
-            </span>
+            </div>
         </x-slot:title>
 
-        <x-ui-card>
+        <div class="p-4">
 
             <div class="space-y-3 min-h-72">
                 <div class="grid grid-cols-4 gap-3">
 
                     <div class="flex col-span-4 gap-3">
                         <div class="w-3/6">
-                            <x-ui-date label="Data Inicial" wire:model.live='data_inicial' format="DD/MM/YYYY"
+                            <x-ui-date label="Data Inicial" wire:model='data_inicial' format="DD/MM/YYYY"
                                 :max-date="now()" />
                         </div>
                         <div class="w-3/6">
-                            <x-ui-date label="Data Final" wire:model.live='data_final' format="DD/MM/YYYY"
+                            <x-ui-date label="Data Final" wire:model='data_final' format="DD/MM/YYYY"
                                 :max-date="now()" />
                         </div>
                     </div>
 
                     <div class="flex col-span-4 gap-3">
                         <div class="w-full">
-                            <x-ui-select.styled label="Tarifa" :options=$tarifas select="label:label|value:value"
-                                searchable wire:model.live='tarifa' multiple />
+                            <x-ui-select.styled label="Tarifa" wire:model="tarifa" :options="$tarifas"
+                                select="label:label|value:value" searchable multiple />
                         </div>
                     </div>
 
                     <div class="col-span-4">
                         <div class="w-full">
-                            <x-ui-select.styled label="Cliente *" :options=$customers select="label:label|value:value"
-                                searchable wire:model.live='customer' multiple />
+                            <x-ui-select.styled label="Cliente" wire:model="customer" :options="$customers"
+                                select="label:label|value:value" searchable multiple />
                         </div>
                     </div>
                     <div class="col-span-4">
                         <div class="w-full">
-                            <x-ui-select.styled label="DID" :options=$dids select="label:label|value:value"
-                                searchable wire:model.live='did' multiple />
+                            <x-ui-select.styled label="DID" wire:model="did" :options="$dids"
+                                select="label:label|value:value" searchable multiple />
                         </div>
                     </div>
                     <div class="col-span-4">
                         <div class="w-full">
-                            <x-ui-select.styled label="Operadora *" :options=$carriers select="label:label|value:value"
-                                searchable wire:model.live='carrier' multiple />
+                            <x-ui-select.styled label="Operadora" wire:model="carrier" :options="$carriers"
+                                select="label:label|value:value" searchable multiple />
                         </div>
                     </div>
 
                     <div class="flex col-span-4 gap-3">
                         <div class="w-3/6">
-                            <x-ui-input label="Numero" icon="dialpad" wire:model.live='numero' />
+                            <x-ui-input label="Numero" icon="phone" wire:model='numero' />
                         </div>
-                        <div class="w-3/6">
-                            <x-ui-input label="Ramal" icon="dialpad" wire:model.live='ramal' />
+                        <div class="col-span-1">
+                            <x-ui-input label="Ramal" icon="phone" wire:model='ramal' />
                         </div>
                     </div>
 
                     <div class="col-span-4">
                         <div class="w-full">
-                            <x-ui-select.styled label="Status" :options=$status select="label:label|value:value"
-                                searchable wire:model.live='stat' multiple />
+                            <x-ui-select.styled label="Status" wire:model="stat" :options="$status"
+                                select="label:label|value:value" searchable multiple />
                         </div>
                     </div>
                     <div class="col-span-4">
                         <div class="w-full">
-                            <x-ui-select.styled label="Desligamento" :options=$desligamentos
-                                select="label:label|value:value" searchable wire:model.live='desligamento' multiple />
+                            <x-ui-select.styled label="Desligamento" wire:model="desligamento" :options="$desligamentos"
+                                select="label:label|value:value" searchable multiple />
                         </div>
                     </div>
 
                 </div>
             </div>
+        </div>
 
-        </x-ui-card>
+        <x-slot:footer>
+            <div class="flex items-center justify-between w-full gap-3">
+                <x-ui-button color="secondary" wire:click="closeFilterModal" class="px-4 py-2">
+                    Cancelar
+                </x-ui-button>
 
-        <x-slot:footer class="justify-between">
-
-            <x-ui-button color="stone" position="left" wire:click="cancel">
-                <x-slot:left>
-                    <x-ui-icon icon="arrow-forward" />
-                </x-slot:left>
-                Voltar
-            </x-ui-button>
-
-            <x-ui-button color="blue" position="left" wire:click="filter">
-                <x-slot:left>
-                    <x-ui-icon icon="search" />
-                </x-slot:left>
-                Filtrar
-            </x-ui-button>
-
+                <x-ui-button color="primary" wire:click="filter" class="px-4 py-2">
+                    <x-slot:left>
+                        <x-ui-icon icon="magnifying-glass" class="w-4 h-4" />
+                    </x-slot:left>
+                    Aplicar Filtros
+                </x-ui-button>
+            </div>
         </x-slot:footer>
 
-    </x-ui-slide>
+    </x-ui-modal>
 </div>

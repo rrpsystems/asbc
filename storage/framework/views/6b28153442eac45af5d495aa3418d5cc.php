@@ -1,0 +1,1 @@
+$wire.entangle('porta_padrao')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/f271fca8f72bd25c40724c2b25a3a6a1.blade.php ENDPATH**/ ?>

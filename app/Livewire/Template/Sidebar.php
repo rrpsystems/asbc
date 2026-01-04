@@ -7,33 +7,23 @@ use Livewire\Attributes\On;
 
 class Sidebar extends Component
 {
-    public $sideToggle = true;
-
     public $dropdown = '';
     public $currentRouteName;
 
-    #[On('toggleSidebar')]
-    public function toggleSidebar($sideToggle)
-    {
-        $this->sideToggle = $sideToggle;
-    }
-
-    // funcção para exibir os dropdown do sidebar
-
+    // Função para exibir os dropdown do sidebar
     public function toogleDropdown($dropdown)
     {
-        if($this->dropdown == $dropdown):
+        if ($this->dropdown == $dropdown) {
             $this->dropdown = '';
-        else:
+        } else {
             $this->dropdown = $dropdown;
-         endif;
-
+        }
     }
 
     public function mount()
-{
-    $this->currentRouteName = Route::currentRouteName();
-}
+    {
+        $this->currentRouteName = Route::currentRouteName();
+    }
 
     public function render()
     {

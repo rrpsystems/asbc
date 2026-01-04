@@ -10,39 +10,43 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
     <tallstackui:script />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        @media (min-width: 768px) {
-            .main.active {
-                margin-left: 0px;
-                width: 100%;
+        /* Transições suaves para o conteúdo principal */
+        .main {
+            transition: margin-left 0.2s ease-in-out, width 0.2s ease-in-out;
+        }
+
+        /* Quando sidebar está fechado, expandir conteúdo */
+        body.sidebar-closed .main {
+            margin-left: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Mobile sempre fullwidth */
+        @media (max-width: 767px) {
+            .main {
+                margin-left: 0 !important;
+                width: 100% !important;
             }
         }
     </style>
 
 </head>
 
-<body class="antialiased text-gray-800 font-inter" x-data="tallstackui_darkTheme()"
-    x-bind:class="{ 'dark bg-gray-700': darkTheme, 'bg-white': !darkTheme }">
+<body class="antialiased text-gray-800 font-sans" x-data="tallstackui_darkTheme()"
+    x-bind:class="{ 'dark bg-gray-900': darkTheme, 'bg-gray-50': !darkTheme }">
     <x-ui-toast />
-    {{-- <x-ui-dialog /> --}}
     <livewire:template.sidebar />
 
-    <main x-data="{ sideToggle: true }"
-        x-on:toggle-sidebar.window="
-    let toggleValue = $event.detail[0] !== undefined ? $event.detail[0] : $event.detail;
-    sideToggle = toggleValue;
-"
-        class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 dark:bg-gray-800 min-h-screen transition-all main"
-        :class="{ 'active': !sideToggle }">
-
+    <main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 dark:bg-gray-900 min-h-screen main">
         <livewire:template.navbar />
 
-        <div class="p-3 ">
+        <div class="p-6 md:p-8">
             {{ $slot }}
         </div>
 

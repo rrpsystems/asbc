@@ -1,0 +1,1 @@
+$wire.entangle('markup_chamadas')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/c55b4883bb0e94e303e738f5463c2d99.blade.php ENDPATH**/ ?>

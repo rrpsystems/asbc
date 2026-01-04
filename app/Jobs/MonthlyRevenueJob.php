@@ -7,6 +7,23 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @deprecated Este job está DEPRECADO e será removido em versão futura.
+ *
+ * PROBLEMAS CRÍTICOS:
+ * 1. Nunca executava porque verificava status 'Processada' (que não existe)
+ * 2. Race conditions ao atualizar resumos mensais
+ * 3. Variável $summary indefinida no catch (erro fatal)
+ * 4. Performance ruim (1 job por CDR)
+ *
+ * SUBSTITUÍDO POR:
+ * - CallTariffJob agora usa RevenueBatchDispatcher
+ * - ProcessMonthlyRevenueBatch processa CDRs em lote
+ * - CheckFranchiseAlert listener para alertas (event-driven)
+ *
+ * @see \App\Jobs\ProcessMonthlyRevenueBatch
+ * @see \App\Services\RevenueBatchDispatcher
+ */
 class MonthlyRevenueJob implements ShouldQueue
 {
     use Queueable;
@@ -17,20 +34,34 @@ class MonthlyRevenueJob implements ShouldQueue
      * Create a new job instance.
      *
      * @param  mixed  $cdr
+     * @deprecated Não use mais este job. Use RevenueBatchDispatcher.
      */
     public function __construct($cdr)
     {
         $this->cdr = $cdr;
+
+        // Log de warning para detectar uso indevido
+        Log::warning('MonthlyRevenueJob DEPRECADO foi instanciado', [
+            'cdr_id' => $cdr->id ?? 'unknown',
+            'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3),
+        ]);
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @deprecated Este job está quebrado e não deve ser usado.
      */
     public function handle(MonthlyRevenueSummaryService $revenueSummaryService)
     {
-        // Verifica se o status do CDR é 'Processada'
+        Log::warning('MonthlyRevenueJob DEPRECADO foi executado - NÃO USE!', [
+            'cdr_id' => $this->cdr->id ?? 'unknown',
+            'cdr_status' => $this->cdr->status ?? 'unknown',
+        ]);
+
+        // NOTA: Este código NUNCA executava porque o status nunca é 'Processada'
+        // O CallTariffJob marca como 'Tarifada', não 'Processada'
         if ($this->cdr->status !== 'Processada') {
             return; // Não faz nada se não estiver processada
         }

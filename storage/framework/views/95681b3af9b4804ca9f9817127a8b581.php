@@ -1,0 +1,1 @@
+$wire.entangle('franquia_valor_movel')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/eea9da33c95d215eb887a477964b6c39.blade.php ENDPATH**/ ?>

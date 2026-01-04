@@ -58,7 +58,7 @@ return [
         |----------------------------------
         | Default and in-use icon type.
         |----------------------------------
-        | Allowed: heroicons, phosphoricons, google, tablericons.
+        | Allowed: heroicons, phosphoricons, google
         */
         'type' => env('TALLSTACKUI_ICON_TYPE', 'heroicons'),
 
@@ -71,9 +71,8 @@ return [
         | Heroicons: solid, outline
         | Phosphoricons: thin, light, regular, bold, duotone
         | Google: default
-        | Tablericons: default
         */
-        'style' => env('TALLSTACKUI_ICON_STYLE', 'solid'),
+        'style' => env('TALLSTACKUI_ICON_STYLE', 'outline'),
 
         /*
         |----------------------------------
@@ -244,8 +243,8 @@ return [
         'radio' => Components\Form\Radio::class,
         'range' => Components\Form\Range::class,
         'rating' => Components\Rating::class,
-        'select.native' => Components\Select\Native::class,
-        'select.styled' => Components\Select\Styled::class,
+        'select.native' => Components\Form\Select\Native::class,
+        'select.styled' => Components\Form\Select\Styled::class,
         'slide' => Components\Slide::class,
         'stats' => Components\Stats::class,
         'step' => Components\Step\Step::class,

@@ -1,0 +1,1 @@
+$wire.entangle('razao_social')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/ca330ab769ea4fbcd286c8466d03c0a1.blade.php ENDPATH**/ ?>

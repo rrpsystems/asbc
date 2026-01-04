@@ -21,7 +21,23 @@ class Create extends Component
 
     public $ativo = true;
 
-    public $slide = false;
+    public $proxy;
+
+    public $porta;
+
+    public $valor_plano_mensal = 0;
+
+    public $dids_inclusos = 0;
+
+    public $franquia_valor_fixo = 0;
+
+    public $franquia_valor_movel = 0;
+
+    public $franquia_valor_nacional = 0;
+
+    public $franquia_compartilhada = true;
+
+    public $modal = false;
 
     public function mount()
     {
@@ -44,12 +60,19 @@ class Create extends Component
                 'data_inicio' => $this->data_inicio,
                 'canais' => $this->canais,
                 'ativo' => $this->ativo,
+                'proxy' => $this->proxy,
+                'porta' => $this->porta,
+                'valor_plano_mensal' => $this->valor_plano_mensal ?? 0,
+                'dids_inclusos' => $this->dids_inclusos ?? 0,
+                'franquia_valor_fixo' => $this->franquia_valor_fixo ?? 0,
+                'franquia_valor_movel' => $this->franquia_valor_movel ?? 0,
+                'franquia_valor_nacional' => $this->franquia_valor_nacional ?? 0,
+                'franquia_compartilhada' => $this->franquia_compartilhada ?? true,
             ]);
 
         } catch (\Exception $e) {
             //dd($e);
-            // $this->dispatch('carrier-close');
-            $this->slide = false;
+            $this->modal = false;
             $this->toast()->error('Erro ao criar a Operadora!')->send();
 
             return;
@@ -62,14 +85,27 @@ class Create extends Component
     #[On('carrier-create')]
     public function create()
     {
-        $this->slide = true;
+        $this->modal = true;
     }
 
     public function cancel()
     {
-        $this->reset(['contrato', 'operadora', 'ativo', 'canais']);
+        $this->reset([
+            'contrato',
+            'operadora',
+            'ativo',
+            'canais',
+            'proxy',
+            'porta',
+            'valor_plano_mensal',
+            'dids_inclusos',
+            'franquia_valor_fixo',
+            'franquia_valor_movel',
+            'franquia_valor_nacional',
+            'franquia_compartilhada'
+        ]);
         $this->data_inicio = now()->format('Y-m-d');
-        $this->slide = false;
+        $this->modal = false;
         $this->dispatch('table-update');
     }
 

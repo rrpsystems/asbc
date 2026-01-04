@@ -35,6 +35,10 @@ class Update extends Component
 
     public $slide = false;
 
+    public $proxy;
+
+    public $porta;
+
     public $ipvoip = '@144.22.234.219:5080';
 
     private $msg_error = 'Erro ao alterar o Numero! ';
@@ -94,6 +98,8 @@ class Update extends Component
         $this->carrier_id = $this->editDid->carrier_id;
         $this->encaminhamento = $this->editDid->encaminhamento;
         $this->ativo = $this->editDid->ativo;
+        $this->proxy = $this->editDid->proxy;
+        $this->porta = $this->editDid->porta;
         $this->apresentationData();
         $this->slide = true;
     }
@@ -116,6 +122,8 @@ class Update extends Component
             'carrier_id' => $this->carrier_id,
             'encaminhamento' => $this->encaminhamento,
             'ativo' => $this->ativo,
+            'proxy' => $this->proxy,
+            'porta' => $this->porta,
         ];
 
         try {
@@ -136,7 +144,8 @@ class Update extends Component
     {
         $this->dispatch('table-update');
         $this->resetValidation();
-        $this->reset(['did', 'carrier_id', 'customer_id', 'encaminhamento', 'quantidade',  'ativo']);
+        $this->reset(['did', 'carrier_id', 'customer_id', 'encaminhamento', 'quantidade', 'ativo',
+            'proxy', 'porta']);
         $this->slide = false;
     }
 

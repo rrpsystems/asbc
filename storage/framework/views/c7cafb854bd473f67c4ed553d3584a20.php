@@ -1,0 +1,1 @@
+$wire.entangle('bloqueio_saida')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/df2327c9c14dab2775fa7cd5cc6fe329.blade.php ENDPATH**/ ?>

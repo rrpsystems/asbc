@@ -1,0 +1,1 @@
+$wire.entangle('franquia_minutos')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/e28d6f457d5fa0a8330d68b12435a50a.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+$wire.entangle('valor_fixo_produto')

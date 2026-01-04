@@ -31,7 +31,17 @@ class RevenueSummary extends Model
         'excedente_total',
         'custo_excedente',
         'custo_total',
+        'produtos_receita',
+        'produtos_custo',
+        'receita_total',
         'fechado',
+    ];
+
+    protected $casts = [
+        'produtos_receita' => 'decimal:2',
+        'produtos_custo' => 'decimal:2',
+        'receita_total' => 'decimal:2',
+        'fechado' => 'boolean',
     ];
 
     public function customer()

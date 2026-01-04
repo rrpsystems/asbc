@@ -1,0 +1,1 @@
+$wire.entangle('valor_fixo_produto')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/fbdbe5e5f96e1f5c6a9867d25d6d5ceb.blade.php ENDPATH**/ ?>

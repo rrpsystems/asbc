@@ -5,7 +5,7 @@
             <h3 class="mb-4 text-2xl font-bold text-gray-800 dark:text-gray-200 sm:mb-0">Lista de DIDs</h3>
             <x-buttons.group btnCreate="did-create" />
         </div>
-        <div class="overflow-x-auto bg-white shadow-md dark:bg-gray-800">
+        <div class="overflow-x-auto bg-white shadow-md dark:bg-gray-800 rounded-lg">
             <x-tables.table>
 
                 <x-slot name=header>
@@ -40,7 +40,7 @@
                                 <span x-on:click="$dispatch('did-update', {{ $did }})"
                                     wire:key='update-{{ $did->id }}'
                                     class="inline-flex items-center font-medium text-yellow-500 transition cursor-pointer hover:text-yellow-700 duration- dark:text-yellow-500">
-                                    <x-ui-icon name="edit" class="w-5 h-5 m-0" />
+                                    <x-ui-icon name="pencil-square" class="w-5 h-5 m-0" />
                                     <span class="ml-1">Editar</span>
                                 </span>
 
@@ -55,13 +55,12 @@
                         </x-tables.tr>
 
                     @empty
-                        <x-tables.td class="py-2"></x-tables.td>
-                        <x-tables.td class="py-2"></x-tables.td>
-                        <x-tables.td class="py-2"></x-tables.td>
-                        <x-tables.td class="py-2"> Sem Dados</x-tables.td>
-                        <x-tables.td class="py-2"></x-tables.td>
-                        <x-tables.td class="py-2"></x-tables.td>
-                        <x-tables.td class="py-2"></x-tables.td>
+                        <x-empty-state
+                            colspan="7"
+                            icon="hashtag"
+                            message="Nenhum DID encontrado"
+                            hint="Cadastre um novo DID para começar"
+                        />
                     @endforelse
                 </x-slot>
             </x-tables.table>

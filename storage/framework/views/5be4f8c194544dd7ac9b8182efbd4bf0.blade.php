@@ -1,0 +1,1 @@
+$wire.entangle('franquia_compartilhada')

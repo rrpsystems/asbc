@@ -1,0 +1,1 @@
+$wire.entangle('carrier')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/7de09f762b15c529b19f92f10e4e812f.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+$wire.entangle('nome')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/2e80667252d8aeb804120259003810e7.blade.php ENDPATH**/ ?>

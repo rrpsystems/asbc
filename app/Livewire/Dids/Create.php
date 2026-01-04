@@ -32,6 +32,10 @@ class Create extends Component
 
     public $ativo = true;
 
+    public $proxy;
+
+    public $porta;
+
     public $slide = false;
 
     private $msg_error = 'Erro ao criar o(s) Numero(s)!';
@@ -86,6 +90,8 @@ class Create extends Component
                     'carrier_id' => $this->carrier_id,
                     'encaminhamento' => $this->encaminhamento,
                     'ativo' => $this->ativo,
+                    'proxy' => $this->proxy,
+                    'porta' => $this->porta,
                 ]);
             }
 
@@ -126,7 +132,8 @@ class Create extends Component
     {
         $this->dispatch('table-update');
         $this->resetValidation();
-        $this->reset(['did', 'carrier_id', 'customer_id', 'encaminhamento', 'quantidade',  'ativo']);
+        $this->reset(['did', 'carrier_id', 'customer_id', 'encaminhamento', 'quantidade', 'ativo',
+            'proxy', 'porta']);
         $this->slide = false;
     }
 

@@ -1,0 +1,1 @@
+$wire.entangle('vencimento')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/7c45258c41cc1c42828d2546b3b0d5c3.blade.php ENDPATH**/ ?>

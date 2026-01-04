@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,13 +21,15 @@ class User extends Authenticatable
         'name',
         'email',
         'rule',
-        'active',
+        'ativo',
         'customer_id',
+        'reseller_id',
         'password',
     ];
 
     protected $casts = [
-        'active' => 'boolean',
+        'ativo' => 'boolean',
+        'rule' => UserRole::class,
     ];
 
     /**
@@ -50,5 +53,39 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function reseller()
+    {
+        return $this->belongsTo(Reseller::class);
+    }
+
+    /**
+     * Verifica se o usuário é uma revenda
+     */
+    public function isReseller(): bool
+    {
+        return $this->rule === UserRole::RESELLER;
+    }
+
+    /**
+     * Verifica se o usuário pode ver custos
+     */
+    public function canSeeCosts(): bool
+    {
+        return $this->rule->canSeeCosts();
+    }
+
+    /**
+     * Verifica se o usuário pode gerenciar clientes
+     */
+    public function canManageCustomers(): bool
+    {
+        return $this->rule->canManageCustomers();
     }
 }

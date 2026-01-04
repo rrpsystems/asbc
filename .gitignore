@@ -18,3 +18,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+nul
+count()
+customer_id
+nomefantasia
+pluck('tarifa')
+toArray()
+storage/imports/*.sql
+storage/imports/*.csv

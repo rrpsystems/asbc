@@ -1,0 +1,1 @@
+$wire.entangle('complemento')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/af4f9e735dc17a7af56b434834af390e.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+$wire.entangle('telefone')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/753b7f733db83c7ec905350ea2f46b3d.blade.php ENDPATH**/ ?>

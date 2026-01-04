@@ -1,0 +1,1 @@
+$wire.entangle('quantidade')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/d207fc844770e7b7a650137eeec7d285.blade.php ENDPATH**/ ?>

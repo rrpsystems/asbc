@@ -1,0 +1,1 @@
+$wire.entangle('valor_venda_unitario')<?php /**PATH C:\Users\Rafael Benedicto\Documents\Herd\asbc\storage\framework\views/24db7e0840b50284e1d60dbeb8bb9854.blade.php ENDPATH**/ ?>

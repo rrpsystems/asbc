@@ -1,6 +1,7 @@
-<div class="sticky top-0 left-0 z-30 flex items-center px-6 py-2 bg-white shadow-md shadow-black/5">
+<div class="sticky top-0 left-0 z-30 flex items-center px-6 py-2 bg-white shadow-md shadow-black/5" x-data>
 
-    <button type="button" class="text-lg text-gray-600 sidebar-toggle" wire:click="toggleSidebar">
+    <button type="button" class="text-lg text-gray-600 transition-colors sidebar-toggle hover:text-gray-900"
+            @click="$dispatch('toggle-sidebar')">
         <x-icons.menu />
     </button>
 
@@ -46,6 +47,11 @@
     </ol>
 
     <ul class="flex items-center ml-auto">
+
+        <!-- Alert Notification -->
+        <li class="mr-2">
+            @livewire('alerts.notification')
+        </li>
 
         <li class="ml-3 dropdown">
             <button type="button" class="flex items-center dropdown-toggle ">
