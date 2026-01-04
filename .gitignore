@@ -26,3 +26,21 @@ pluck('tarifa')
 toArray()
 storage/imports/*.sql
 storage/imports/*.csv
+
+# Laravel cache files
+/bootstrap/cache/*.php
+!/bootstrap/cache/.gitignore
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+
+# Composer
+composer.lock
+
+# Claude settings
+.claude/settings.local.json
