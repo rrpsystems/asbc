@@ -378,14 +378,30 @@ valor_markup = valor_venda_final - valor_venda
 
 ## 📖 Documentação
 
-Documentação técnica disponível na pasta raiz:
+Toda a documentação técnica está organizada na pasta **[docs/](docs/)**:
 
-- [INSTALACAO.md](INSTALACAO.md) - Guia de instalação detalhado
-- [SISTEMA_REVENDAS.md](SISTEMA_REVENDAS.md) - Sistema de revendas completo
-- [SISTEMA_TARIFACAO.md](SISTEMA_TARIFACAO.md) - Processamento de tarifação
-- [GUIA_IMPORTACAO_CDRS.md](GUIA_IMPORTACAO_CDRS.md) - Importação de CDRs
-- [BACKEND_ARCHITECTURE.md](BACKEND_ARCHITECTURE.md) - Arquitetura do sistema
-- [UI_STANDARDS.md](UI_STANDARDS.md) - Padrões de interface
+### 📋 Índice Completo
+- **[📚 Documentação Completa](docs/README.md)** - Índice geral de toda a documentação
+
+### 🚀 Início Rápido
+- **[Guia de Instalação](docs/guides/INSTALACAO.md)** - Instalação completa do ASBC
+- **[Quick Start - Tarifação](docs/guides/QUICK_START_TARIFACAO.md)** - Início rápido do sistema de tarifação
+- **[Instalação do Kamailio](docs/kamailio/INSTALACAO_KAMAILIO.md)** - Guia completo Kamailio 6 + RTPEngine
+
+### 🏗️ Arquitetura
+- **[Arquitetura Backend](docs/architecture/BACKEND_ARCHITECTURE.md)** - Estrutura e organização do backend
+- **[Sistema de Tarifação](docs/architecture/SISTEMA_TARIFACAO.md)** - Arquitetura do sistema de tarifação
+- **[Sistema de Revendas](docs/architecture/SISTEMA_REVENDAS.md)** - Arquitetura multi-tenant de revendas
+- **[Padrões de UI](docs/architecture/UI_STANDARDS.md)** - Guia de padrões de interface
+
+### 📖 Guias e Tutoriais
+- **[Importação de CDRs](docs/guides/GUIA_IMPORTACAO_CDRS.md)** - Como importar CDRs do Asterisk/Kamailio
+- **[Tarifação em Batch](docs/guides/TARIFACAO_BATCH.md)** - Processamento otimizado em lote
+- **[Configuração Proxy/Porta](docs/guides/CONFIGURACAO_PROXY_PORTA.md)** - Configuração de proxy e portas
+
+### 🔧 Implementações e Análises
+- **[Implementações](docs/implementation/)** - Detalhes de implementações e otimizações
+- **[Análises Técnicas](docs/analysis/)** - Análises detalhadas de componentes do sistema
 
 ## 🔐 Segurança
 
