@@ -178,6 +178,85 @@
 
             </div>
 
+            <!-- Separador para Análise SIP/Q.850 -->
+            @if($details->sip_code || $details->q850_cause || $details->failure_type)
+                <div class="col-span-3 mt-4">
+                    <div class="flex items-center">
+                        <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                        <span class="px-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Análise de Qualidade</span>
+                        <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                    </div>
+                </div>
+
+                <!-- Código SIP -->
+                @if($details->sip_code)
+                    <div class="col-span-1">
+                        <strong class="font-semibold text-gray-900 dark:text-white">Código SIP:</strong>
+                        <span class="px-2 py-1 ml-2 text-xs font-mono font-bold rounded
+                            {{ $details->sip_code == '200' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                               (in_array($details->sip_code, ['486', '487']) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                               'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200') }}">
+                            {{ $details->sip_code }}
+                        </span>
+                    </div>
+
+                    <div class="col-span-2">
+                        <strong class="font-semibold text-gray-900 dark:text-white">Descrição SIP:</strong>
+                        {{ $details->sip_reason ?? 'N/A' }}
+                    </div>
+                @endif
+
+                <!-- Causa Q.850 -->
+                @if($details->q850_cause)
+                    <div class="col-span-1">
+                        <strong class="font-semibold text-gray-900 dark:text-white">Causa Q.850:</strong>
+                        <span class="px-2 py-1 ml-2 text-xs font-mono font-bold rounded
+                            {{ $details->q850_cause == '16' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                               (in_array($details->q850_cause, ['17', '19']) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                               'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200') }}">
+                            {{ $details->q850_cause }}
+                        </span>
+                    </div>
+
+                    <div class="col-span-2">
+                        <strong class="font-semibold text-gray-900 dark:text-white">Descrição Q.850:</strong>
+                        {{ $details->q850_description ?? 'N/A' }}
+                    </div>
+                @endif
+
+                <!-- Tipo de Falha -->
+                @if($details->failure_type)
+                    @php
+                        $failureColors = [
+                            'REDIRECT' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                            'CLIENT_ERROR' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+                            'SERVER_ERROR' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                            'GLOBAL_FAILURE' => 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+                        ];
+                        $failureLabels = [
+                            'REDIRECT' => 'Redirecionamento (3xx)',
+                            'CLIENT_ERROR' => 'Erro do Cliente (4xx)',
+                            'SERVER_ERROR' => 'Erro do Servidor (5xx)',
+                            'GLOBAL_FAILURE' => 'Falha Global (6xx)',
+                        ];
+                    @endphp
+                    <div class="col-span-3">
+                        <strong class="font-semibold text-gray-900 dark:text-white">Tipo de Falha:</strong>
+                        <span class="px-2 py-1 ml-2 text-xs font-semibold rounded {{ $failureColors[$details->failure_type] ?? 'bg-gray-100 text-gray-800' }}">
+                            {{ $failureLabels[$details->failure_type] ?? $details->failure_type }}
+                        </span>
+                    </div>
+                @endif
+
+                <!-- Reason Header (se disponível) -->
+                @if($details->reason_header)
+                    <div class="col-span-3">
+                        <strong class="font-semibold text-gray-900 dark:text-white">Reason Header:</strong>
+                        <code class="block p-2 mt-1 text-xs bg-gray-100 dark:bg-gray-800 rounded">{{ $details->reason_header }}</code>
+                    </div>
+                @endif
+            @endif
+
         </div>
     </div>
 

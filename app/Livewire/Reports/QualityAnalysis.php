@@ -81,6 +81,56 @@ class QualityAnalysis extends Component
             $query->where('carrier_id', $this->carrier_id);
         }
 
+        // Análise de códigos SIP e Q.850
+        $sipAnalysis = Cdr::whereBetween('calldate', [
+            $this->data_inicial . ' 00:00:00',
+            $this->data_final . ' 23:59:59'
+        ])
+            ->when($this->carrier_id !== 'all', fn($q) => $q->where('carrier_id', $this->carrier_id))
+            ->select([
+                'sip_code',
+                'sip_reason',
+                DB::raw('COUNT(*) as total'),
+                DB::raw('ROUND((COUNT(*)::numeric / (SELECT COUNT(*) FROM cdrs WHERE calldate BETWEEN \'' . $this->data_inicial . ' 00:00:00\' AND \'' . $this->data_final . ' 23:59:59\'' . ($this->carrier_id !== 'all' ? ' AND carrier_id = ' . $this->carrier_id : '') . ')) * 100, 2) as percentage')
+            ])
+            ->whereNotNull('sip_code')
+            ->groupBy('sip_code', 'sip_reason')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+        $q850Analysis = Cdr::whereBetween('calldate', [
+            $this->data_inicial . ' 00:00:00',
+            $this->data_final . ' 23:59:59'
+        ])
+            ->when($this->carrier_id !== 'all', fn($q) => $q->where('carrier_id', $this->carrier_id))
+            ->select([
+                'q850_cause',
+                'q850_description',
+                DB::raw('COUNT(*) as total'),
+                DB::raw('ROUND((COUNT(*)::numeric / (SELECT COUNT(*) FROM cdrs WHERE calldate BETWEEN \'' . $this->data_inicial . ' 00:00:00\' AND \'' . $this->data_final . ' 23:59:59\'' . ($this->carrier_id !== 'all' ? ' AND carrier_id = ' . $this->carrier_id : '') . ' AND q850_cause IS NOT NULL)) * 100, 2) as percentage')
+            ])
+            ->whereNotNull('q850_cause')
+            ->groupBy('q850_cause', 'q850_description')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+        $failureTypeAnalysis = Cdr::whereBetween('calldate', [
+            $this->data_inicial . ' 00:00:00',
+            $this->data_final . ' 23:59:59'
+        ])
+            ->when($this->carrier_id !== 'all', fn($q) => $q->where('carrier_id', $this->carrier_id))
+            ->select([
+                'failure_type',
+                DB::raw('COUNT(*) as total'),
+                DB::raw('ROUND((COUNT(*)::numeric / (SELECT COUNT(*) FROM cdrs WHERE calldate BETWEEN \'' . $this->data_inicial . ' 00:00:00\' AND \'' . $this->data_final . ' 23:59:59\'' . ($this->carrier_id !== 'all' ? ' AND carrier_id = ' . $this->carrier_id : '') . ' AND failure_type IS NOT NULL)) * 100, 2) as percentage')
+            ])
+            ->whereNotNull('failure_type')
+            ->groupBy('failure_type')
+            ->orderByDesc('total')
+            ->get();
+
         // Agrupa conforme seleção
         if ($this->group_by === 'customer') {
             $data = $query->select([
@@ -153,6 +203,6 @@ class QualityAnalysis extends Component
         // Lista de operadoras para o filtro
         $carriers = Carrier::where('ativo', true)->orderBy('operadora')->get();
 
-        return view('livewire.reports.quality-analysis', compact('data', 'totals', 'carriers'));
+        return view('livewire.reports.quality-analysis', compact('data', 'totals', 'carriers', 'sipAnalysis', 'q850Analysis', 'failureTypeAnalysis'));
     }
 }

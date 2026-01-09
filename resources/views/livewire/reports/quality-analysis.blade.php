@@ -212,8 +212,153 @@
             </x-tables.table>
         </div>
 
+        <!-- Análise de Códigos SIP e Q.850 -->
+        <div class="grid grid-cols-1 gap-4 mt-6 lg:grid-cols-3">
+            <!-- Códigos SIP mais frequentes -->
+            <div class="p-4 bg-white shadow-md dark:bg-gray-800 rounded-lg">
+                <h4 class="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Top 10 Códigos SIP
+                </h4>
+                <div class="space-y-3">
+                    @forelse($sipAnalysis as $sip)
+                        <div class="flex items-center justify-between p-2 rounded bg-gray-50 dark:bg-gray-700">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-1 text-xs font-mono font-bold rounded
+                                        {{ $sip->sip_code == '200' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                                           (in_array($sip->sip_code, ['486', '487']) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                                           'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200') }}">
+                                        {{ $sip->sip_code }}
+                                    </span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">
+                                        {{ \Illuminate\Support\Str::limit($sip->sip_reason ?? 'N/A', 20) }}
+                                    </span>
+                                </div>
+                                <div class="mt-1 w-full bg-gray-200 rounded-full h-2 dark:bg-gray-600">
+                                    <div class="h-2 rounded-full {{ $sip->sip_code == '200' ? 'bg-green-600' : 'bg-red-600' }}"
+                                         style="width: {{ $sip->percentage }}%"></div>
+                                </div>
+                            </div>
+                            <div class="ml-3 text-right">
+                                <div class="text-sm font-bold text-gray-900 dark:text-gray-100">
+                                    {{ number_format($sip->total, 0, ',', '.') }}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    {{ number_format($sip->percentage, 1) }}%
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-sm text-center text-gray-500 dark:text-gray-400">
+                            Nenhum dado SIP disponível
+                        </p>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Códigos Q.850 mais frequentes -->
+            <div class="p-4 bg-white shadow-md dark:bg-gray-800 rounded-lg">
+                <h4 class="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Top 10 Causas Q.850
+                </h4>
+                <div class="space-y-3">
+                    @forelse($q850Analysis as $q850)
+                        <div class="flex items-center justify-between p-2 rounded bg-gray-50 dark:bg-gray-700">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-1 text-xs font-mono font-bold rounded
+                                        {{ $q850->q850_cause == '16' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                                           (in_array($q850->q850_cause, ['17', '19']) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                                           'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200') }}">
+                                        {{ $q850->q850_cause }}
+                                    </span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">
+                                        {{ \Illuminate\Support\Str::limit($q850->q850_description ?? 'N/A', 18) }}
+                                    </span>
+                                </div>
+                                <div class="mt-1 w-full bg-gray-200 rounded-full h-2 dark:bg-gray-600">
+                                    <div class="h-2 rounded-full {{ $q850->q850_cause == '16' ? 'bg-green-600' : 'bg-orange-600' }}"
+                                         style="width: {{ $q850->percentage }}%"></div>
+                                </div>
+                            </div>
+                            <div class="ml-3 text-right">
+                                <div class="text-sm font-bold text-gray-900 dark:text-gray-100">
+                                    {{ number_format($q850->total, 0, ',', '.') }}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    {{ number_format($q850->percentage, 1) }}%
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-sm text-center text-gray-500 dark:text-gray-400">
+                            Nenhum dado Q.850 disponível
+                        </p>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Tipos de Falha -->
+            <div class="p-4 bg-white shadow-md dark:bg-gray-800 rounded-lg">
+                <h4 class="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Tipos de Falha
+                </h4>
+                <div class="space-y-3">
+                    @forelse($failureTypeAnalysis as $failure)
+                        <div class="flex items-center justify-between p-2 rounded bg-gray-50 dark:bg-gray-700">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    @php
+                                        $failureColors = [
+                                            'REDIRECT' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                            'CLIENT_ERROR' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+                                            'SERVER_ERROR' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                                            'GLOBAL_FAILURE' => 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+                                        ];
+                                        $failureLabels = [
+                                            'REDIRECT' => 'Redirecionamento',
+                                            'CLIENT_ERROR' => 'Erro Cliente',
+                                            'SERVER_ERROR' => 'Erro Servidor',
+                                            'GLOBAL_FAILURE' => 'Falha Global',
+                                        ];
+                                    @endphp
+                                    <span class="px-2 py-1 text-xs font-semibold rounded {{ $failureColors[$failure->failure_type] ?? 'bg-gray-100 text-gray-800' }}">
+                                        {{ $failureLabels[$failure->failure_type] ?? $failure->failure_type }}
+                                    </span>
+                                </div>
+                                <div class="mt-2 w-full bg-gray-200 rounded-full h-2 dark:bg-gray-600">
+                                    @php
+                                        $barColors = [
+                                            'REDIRECT' => 'bg-blue-600',
+                                            'CLIENT_ERROR' => 'bg-yellow-600',
+                                            'SERVER_ERROR' => 'bg-red-600',
+                                            'GLOBAL_FAILURE' => 'bg-purple-600',
+                                        ];
+                                    @endphp
+                                    <div class="h-2 rounded-full {{ $barColors[$failure->failure_type] ?? 'bg-gray-600' }}"
+                                         style="width: {{ $failure->percentage }}%"></div>
+                                </div>
+                            </div>
+                            <div class="ml-3 text-right">
+                                <div class="text-sm font-bold text-gray-900 dark:text-gray-100">
+                                    {{ number_format($failure->total, 0, ',', '.') }}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    {{ number_format($failure->percentage, 1) }}%
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-sm text-center text-gray-500 dark:text-gray-400">
+                            Nenhum dado de falha disponível
+                        </p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
         <!-- Legend -->
-        <div class="p-4 mt-4 bg-gray-50 rounded-lg dark:bg-gray-800">
+        <div class="p-4 mt-6 bg-gray-50 rounded-lg dark:bg-gray-800">
             <p class="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Legenda ASR:</p>
             <div class="flex flex-wrap gap-4 text-sm">
                 <div class="flex items-center gap-2">
