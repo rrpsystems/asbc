@@ -46,6 +46,7 @@
 
 ### Funcionalidades Específicas
 - **[Painel de Revenda Completo - Fase 4](guides/FASE_4_PAINEL_REVENDA_COMPLETO.md)** - Implementação completa do painel de revendas
+- **[Análise de Qualidade SIP/Q.850](guides/ANALISE_QUALIDADE_SIP_Q850.md)** - Guia completo de análise de qualidade com códigos SIP e Q.850
 
 ---
 
