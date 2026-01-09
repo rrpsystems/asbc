@@ -118,7 +118,13 @@
       "Bash(cmd /c \"del /F /Q \\\\.\\\\c:\\\\Users\\\\Rafael Benedicto\\\\Documents\\\\Herd\\\\asbc\\\\nul\")",
       "Bash(git add:*)",
       "Bash(powershell -Command \"Remove-Item -Path ''\\\\?\\\\c:\\\\Users\\\\Rafael Benedicto\\\\Documents\\\\Herd\\\\asbc\\\\nul'' -Force\")",
-      "Bash(powershell -Command \"Remove-Item -Path ''.\\\\nul'' -Force -ErrorAction SilentlyContinue; if \\(Test-Path ''.\\\\nul''\\) { Write-Host ''Arquivo ainda existe'' } else { Write-Host ''Arquivo removido com sucesso'' }\")"
+      "Bash(powershell -Command \"Remove-Item -Path ''.\\\\nul'' -Force -ErrorAction SilentlyContinue; if \\(Test-Path ''.\\\\nul''\\) { Write-Host ''Arquivo ainda existe'' } else { Write-Host ''Arquivo removido com sucesso'' }\")",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(\"C:\\\\Users\\\\Rafael Benedicto\\\\.config\\\\herd\\\\bin\\\\php.bat\" artisan optimize:clear)",
+      "Bash(git mv:*)",
+      "Bash(tree:*)",
+      "Bash(\"C:\\\\Users\\\\Rafael Benedicto\\\\.config\\\\herd\\\\bin\\\\php.bat\" artisan make:migration:*)"
     ]
   }
 }

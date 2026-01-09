@@ -16,6 +16,8 @@ class Cdr extends Model
         'start', 'answer', 'end', 'duration', 'billsec', 'disposition', 'amaflags', 'accountcode',
         'userfield', 'recordingfile', 'cobrada', 'revenue_summary_id',
         'valor_venda_final', 'valor_markup',
+        // Novos campos SIP e Q.850
+        'sip_code', 'sip_reason', 'q850_cause', 'q850_description', 'reason_header', 'failure_type',
     ];
 
     public function getHangupAttribute($value)

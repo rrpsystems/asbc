@@ -40,13 +40,14 @@ listen=tcp:0.0.0.0:5060 advertise SEU_IP_PUBLICO:5060
 modparam("sqlops", "sqlcon", "pc=>postgres://usuario:senha@localhost/banco")
 ```
 
-### base-routes.cfg (não incluído)
+### base-routes.cfg
 Rotas básicas de processamento de chamadas:
 - Request routing
 - Dialog management
-- CDR storage
+- CDR storage com campos SIP/Q.850 aprimorados
 - Codec extraction
 - Channel control
+- Extração de códigos SIP e Q.850 para análise de qualidade
 
 ### calls-in.cfg (não incluído)
 Processamento de chamadas de entrada:
@@ -151,11 +152,50 @@ Os arquivos de configuração do Kamailio inserem CDRs diretamente na tabela `cd
 - `carrier_id`: ID da operadora
 - `did_id`: DID utilizado
 
+**Campos SIP e Q.850** (análise de qualidade):
+- `sip_code`: Código de status SIP (200, 404, 486, 503, etc.)
+- `sip_reason`: Descrição do status SIP (OK, Not Found, Busy Here, etc.)
+- `q850_cause`: Código de causa Q.850/ISDN (16, 17, 19, 34, etc.)
+- `q850_description`: Descrição da causa Q.850 (Normal call clearing, User busy, etc.)
+- `reason_header`: Cabeçalho Reason completo do SIP
+- `failure_type`: Tipo de falha (REDIRECT, CLIENT_ERROR, SERVER_ERROR, GLOBAL_FAILURE)
+
 O sistema ASBC processa estes CDRs automaticamente para:
 - Cálculo de tarifas
 - Geração de faturas
 - Relatórios
 - Alertas
+- Análise de qualidade de chamadas (ASR/ACD/PDD)
+- Detecção de problemas e otimização de rotas
+
+### Códigos SIP e Q.850
+
+O sistema captura automaticamente códigos SIP e Q.850 para análise detalhada de qualidade:
+
+**Códigos SIP comuns**:
+- `200 OK`: Chamada atendida com sucesso
+- `403 Forbidden`: Acesso negado
+- `404 Not Found`: Número não encontrado
+- `480 Temporarily Unavailable`: Temporariamente indisponível
+- `486 Busy Here`: Ocupado
+- `487 Request Terminated`: Requisição cancelada
+- `503 Service Unavailable`: Serviço indisponível
+
+**Códigos Q.850 comuns**:
+- `16`: Normal call clearing (desligamento normal)
+- `17`: User busy (usuário ocupado)
+- `18`: No user responding (sem resposta)
+- `19`: No answer from user (sem resposta do usuário)
+- `21`: Call rejected (chamada rejeitada)
+- `34`: No circuit/channel available (sem canal disponível)
+- `41`: Temporary failure (falha temporária)
+- `127`: Interworking, unspecified (interoperabilidade não especificada)
+
+**Tipos de falha**:
+- `REDIRECT` (3xx): Redirecionamento
+- `CLIENT_ERROR` (4xx): Erro do cliente/origem
+- `SERVER_ERROR` (5xx): Erro do servidor/destino
+- `GLOBAL_FAILURE` (6xx): Falha global
 
 ## Troubleshooting
 
