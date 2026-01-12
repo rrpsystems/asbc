@@ -66,54 +66,41 @@ new #[Layout('layouts.guest')] class extends Component {
 
                                         <!--Username input-->
                                         <div class="space-y-2">
-                                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                E-mail
-                                            </label>
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                                    </svg>
-                                                </div>
-                                                <x-text-input wire:model="form.email" id="email"
-                                                    class="block w-full pl-10 pr-3 py-3 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:bg-slate-700 dark:text-white transition-all duration-200"
-                                                    type="email" name="email" required
-                                                    autofocus autocomplete="username" placeholder="seu@email.com" />
-                                            </div>
-                                            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+                                            <x-ui-input
+                                                wire:model.live="form.email"
+                                                id="email"
+                                                label="E-mail"
+                                                icon="user"
+                                                type="email"
+                                                placeholder="seu@email.com"
+                                                hint="Digite seu e-mail de acesso"
+                                                invalidate
+                                            />
                                         </div>
 
                                         <!--Password input-->
                                         <div class="space-y-2">
-                                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                Senha
-                                            </label>
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                                    </svg>
-                                                </div>
-                                                <x-text-input wire:model="form.password" id="password"
-                                                    placeholder="••••••••"
-                                                    class="block w-full pl-10 pr-3 py-3 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:bg-slate-700 dark:text-white transition-all duration-200"
-                                                    type="password" name="password" required
-                                                    autocomplete="current-password" />
-                                            </div>
-                                            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
+                                            <x-ui-password
+                                                wire:model.live="form.password"
+                                                id="password"
+                                                label="Senha"
+                                                placeholder="••••••••"
+                                                hint="Digite sua senha"
+                                                invalidate
+                                            />
                                         </div>
 
                                         <!--Submit button-->
                                         <div class="pt-2 space-y-4">
-                                            <button
-                                                class="w-full inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-base font-semibold text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                                            <x-ui-button
                                                 type="submit"
-                                                style="background: linear-gradient(to right, #00a9ce, #00d084, #28a745);">
-                                                <span>Entrar no Sistema</span>
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                                </svg>
-                                            </button>
+                                                class="w-full"
+                                                color="cyan"
+                                                size="lg"
+                                                position="right"
+                                                icon="arrow-right">
+                                                Entrar no Sistema
+                                            </x-ui-button>
 
                                             <!--Forgot password link-->
                                             @if (Route::has('password.request'))

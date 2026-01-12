@@ -91,60 +91,143 @@
             <x-tables.table>
 
                 <x-slot name=header>
-                    <x-tables.th label="Data/Hora" column="id" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="DID" column="did_id" :direction="$direction" :sort="$sort" />
+                    <x-tables.th label="Data/Hora" column="calldate" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Cliente" column="customer_id" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Numero" column="numero" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="Tarifa" column="tarifa" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="T. Cobra" column="tempo_cobrado" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="V. Compra" column="valor_compra" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="V. Venda" column="valor_venda" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="Ramal" column="ramal" :direction="$direction" :sort="$sort" />
+                    <x-tables.th label="Tipo/Tarifa" column="tarifa" :direction="$direction" :sort="$sort" />
                     <x-tables.th label="Duração" column="billsec" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="Desconexão" column="desligamento" :direction="$direction" :sort="$sort" />
-                    <x-tables.th label="status" />
+                    <x-tables.th label="Status" column="disposition" :direction="$direction" :sort="$sort" />
+                    <x-tables.th label="Qualidade" />
+                    <x-tables.th label="Valores" />
                     <x-tables.th label="Detalhes" />
                 </x-slot>
 
                 <x-slot name=body>
                     @forelse ($cdrs as $cdr)
                         <x-tables.tr>
-                            <x-tables.td class="py-2">{{ date('d/m/Y H:i', strtotime($cdr->calldate)) }}</x-tables.td>
-
-                            <x-tables.td class="py-2">{{ $cdr->did_id }}</x-tables.td>
-
-                            <x-tables.td
-                                class="py-2">{{ Str::limit($cdr->customer->razaosocial ?? $cdr->customer_id, 20) }}</x-tables.td>
-
-                            <x-tables.td class="py-2">{{ format_phone($cdr->attributes['numero'] ?? $cdr->numero, $cdr->tarifa) }}</x-tables.td>
-
-                            <x-tables.td class="py-2">{{ $cdr->tarifa }}</x-tables.td>
-                            <x-tables.td
-                                class="py-2">{{ \Carbon\Carbon::createFromFormat('U', $cdr->tempo_cobrado ?? '0')->format('H:i:s') }}</x-tables.td>
-                            <x-tables.td
-                                class="py-2">{{ number_format($cdr->valor_compra ?? '0', 3, ',', '.') }}</x-tables.td>
-                            <x-tables.td
-                                class="py-2">{{ number_format($cdr->valor_venda ?? '0', 3, ',', '.') }}</x-tables.td>
-
-                            <x-tables.td class="py-2">{{ $cdr->ramal }}</x-tables.td>
-
-                            <x-tables.td class="py-2">
-                                {{ \Carbon\Carbon::createFromFormat('U', $cdr->billsec ?? '0')->format('H:i:s') }}
+                            <!-- Data/Hora -->
+                            <x-tables.td class="py-2 whitespace-nowrap">
+                                {{ date('d/m/Y H:i', strtotime($cdr->calldate)) }}
                             </x-tables.td>
 
-                            <x-tables.td class="py-2">{{ $cdr->desligamento }}</x-tables.td>
+                            <!-- Cliente -->
+                            <x-tables.td class="py-2">
+                                {{ Str::limit($cdr->customer->razaosocial ?? $cdr->customer_id, 25) }}
+                            </x-tables.td>
 
-                            <x-tables.td class="py-2">{{ $cdr->status }}</x-tables.td>
-                            <x-tables.td class="py-2" wire:click="openDetails({{ $cdr->id }})"
+                            <!-- Numero -->
+                            <x-tables.td class="py-2 whitespace-nowrap">
+                                {{ format_phone($cdr->attributes['numero'] ?? $cdr->numero, $cdr->tarifa) }}
+                            </x-tables.td>
+
+                            <!-- Tipo/Tarifa -->
+                            <x-tables.td class="py-2">
+                                <div class="flex flex-col gap-1">
+                                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">{{ $cdr->tipo ?? '-' }}</span>
+                                    <span class="px-2 py-0.5 text-xs font-medium rounded-full inline-block w-fit
+                                        {{ $cdr->tarifa === 'Fixo' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                                           ($cdr->tarifa === 'Móvel' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' :
+                                           'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200') }}">
+                                        {{ $cdr->tarifa }}
+                                    </span>
+                                </div>
+                            </x-tables.td>
+
+                            <!-- Duração -->
+                            <x-tables.td class="py-2 whitespace-nowrap">
+                                <div class="flex flex-col gap-0.5 text-sm">
+                                    <span class="font-medium text-gray-900 dark:text-gray-100">
+                                        {{ \Carbon\Carbon::createFromFormat('U', $cdr->billsec ?? '0')->format('H:i:s') }}
+                                    </span>
+                                    @if($cdr->tempo_cobrado && $cdr->tempo_cobrado != $cdr->billsec)
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            Cobr: {{ \Carbon\Carbon::createFromFormat('U', $cdr->tempo_cobrado ?? '0')->format('H:i:s') }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </x-tables.td>
+
+                            <!-- Status -->
+                            <x-tables.td class="py-2">
+                                <div class="flex flex-col gap-1">
+                                    <span class="px-2 py-0.5 text-xs font-semibold rounded-full inline-block w-fit
+                                        {{ $cdr->disposition === 'ANSWERED' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                                           ($cdr->disposition === 'NO ANSWER' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                                           'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200') }}">
+                                        {{ $cdr->disposition }}
+                                    </span>
+                                    @if($cdr->desligamento)
+                                        <span class="text-xs text-gray-600 dark:text-gray-400">{{ $cdr->desligamento }}</span>
+                                    @endif
+                                </div>
+                            </x-tables.td>
+
+                            <!-- Qualidade (SIP/Q.850) -->
+                            <x-tables.td class="py-2">
+                                <div class="flex flex-col gap-1">
+                                    @if($cdr->sip_code)
+                                        <span class="px-2 py-0.5 text-xs font-mono font-bold rounded inline-block w-fit
+                                            {{ $cdr->sip_code == '200' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                                               (in_array($cdr->sip_code, ['486', '487']) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                                               'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200') }}"
+                                            title="{{ $cdr->sip_reason ?? 'N/A' }}">
+                                            SIP: {{ $cdr->sip_code }}
+                                        </span>
+                                    @endif
+                                    @if($cdr->q850_cause)
+                                        <span class="px-2 py-0.5 text-xs font-mono font-bold rounded inline-block w-fit
+                                            {{ $cdr->q850_cause == '16' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                                               (in_array($cdr->q850_cause, ['17', '19']) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                                               'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200') }}"
+                                            title="{{ $cdr->q850_description ?? 'N/A' }}">
+                                            Q850: {{ $cdr->q850_cause }}
+                                        </span>
+                                    @endif
+                                    @if(!$cdr->sip_code && !$cdr->q850_cause)
+                                        <span class="text-xs text-gray-400 dark:text-gray-500">-</span>
+                                    @endif
+                                </div>
+                            </x-tables.td>
+
+                            <!-- Valores -->
+                            <x-tables.td class="py-2 whitespace-nowrap">
+                                <div class="flex flex-col gap-0.5 text-sm">
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">C:</span>
+                                        <span class="font-medium text-red-600 dark:text-red-400">
+                                            R$ {{ number_format($cdr->valor_compra ?? '0', 2, ',', '.') }}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">V:</span>
+                                        <span class="font-medium text-green-600 dark:text-green-400">
+                                            R$ {{ number_format($cdr->valor_venda ?? '0', 2, ',', '.') }}
+                                        </span>
+                                    </div>
+                                    @php
+                                        $profit = ($cdr->valor_venda ?? 0) - ($cdr->valor_compra ?? 0);
+                                    @endphp
+                                    <div class="flex items-center gap-1 pt-0.5 border-t border-gray-200 dark:border-gray-600">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">P:</span>
+                                        <span class="text-xs font-bold {{ $profit >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400' }}">
+                                            R$ {{ number_format($profit, 2, ',', '.') }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </x-tables.td>
+
+                            <!-- Detalhes -->
+                            <x-tables.td class="py-2 text-center" wire:click="openDetails({{ $cdr->id }})"
                                 wire:key='{{ $cdr->uniqueid }}'>
                                 <x-ui-icon name="eye"
-                                    class="w-5 h-5 cursor-pointer hover:text-gray-100 dark:hover:text-blue-500" /></x-tables.td>
+                                    class="w-5 h-5 cursor-pointer hover:text-gray-100 dark:hover:text-blue-500" />
+                            </x-tables.td>
 
                         </x-tables.tr>
 
                     @empty
                         <x-empty-state
-                            colspan="7"
+                            colspan="9"
                             icon="phone"
                             message="Nenhum CDR encontrado"
                             hint="Tente ajustar os filtros de busca ou período"
