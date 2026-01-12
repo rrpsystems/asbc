@@ -179,7 +179,7 @@
             </div>
 
             <!-- Separador para Análise SIP/Q.850 -->
-            @if($details->sip_code || $details->q850_cause || $details->failure_type)
+            @if($details && ($details->sip_code || $details->q850_cause || $details->failure_type))
                 <div class="col-span-3 mt-4">
                     <div class="flex items-center">
                         <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
