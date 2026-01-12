@@ -67,7 +67,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         <!--Username input-->
                                         <div class="space-y-2">
                                             <x-ui-input
-                                                wire:model.live="form.email"
+                                                wire:model.blur="form.email"
                                                 id="email"
                                                 label="E-mail"
                                                 icon="user"
@@ -81,7 +81,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                         <!--Password input-->
                                         <div class="space-y-2">
                                             <x-ui-password
-                                                wire:model.live="form.password"
+                                                wire:model.blur="form.password"
                                                 id="password"
                                                 label="Senha"
                                                 placeholder="••••••••"
