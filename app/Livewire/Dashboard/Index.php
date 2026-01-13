@@ -102,10 +102,12 @@ class Index extends Component
         $cacheKey = "dashboard:max_customer_channels:{$this->periodoFiltro}:{$month}";
 
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
-            return Cdr::with('customer')->selectRaw('customer_id, MAX(customer_channels) as max_customer_channels')
+            return Cdr::with('customer')->selectRaw('customer_id, MAX(CAST(customer_channels AS INTEGER)) as max_customer_channels')
                 ->whereBetween('calldate', [$startDate, $endDate])
+                ->whereNotNull('customer_channels')
+                ->where('customer_channels', '!=', '')
                 ->groupBy('customer_id')
-                ->orderBy('max_customer_channels', 'desc')
+                ->orderByRaw('MAX(CAST(customer_channels AS INTEGER)) DESC')
                 ->get();
         });
     }
@@ -132,8 +134,8 @@ class Index extends Component
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($startDate, $endDate) {
             return Cdr::selectRaw('
                 EXTRACT(HOUR FROM calldate)::integer as hour_of_day,
-                MAX(carrier_channels) as max_carrier_channels,
-                MAX(customer_channels) as max_customer_channels,
+                MAX(CAST(NULLIF(carrier_channels, \'\') AS INTEGER)) as max_carrier_channels,
+                MAX(CAST(NULLIF(customer_channels, \'\') AS INTEGER)) as max_customer_channels,
                 COUNT(*) as total_calls
             ')
                 ->whereBetween('calldate', [$startDate, $endDate])
@@ -312,11 +314,12 @@ class Index extends Component
         $this->callsPerHour = $this->getCallsPerHour($startDate, $endDate);
 
         // Calcula pico de canais do período (agora por faixa horária)
+        // Converte para integer para garantir comparação correta
         $maxChannels = $this->data->max('max_carrier_channels');
         $maxHour = $this->data->where('max_carrier_channels', $maxChannels)->first();
 
         $this->maxChannelsInfo = [
-            'max' => $maxChannels ?? 0,
+            'max' => (int) ($maxChannels ?? 0),
             'hour' => $maxHour ? sprintf('%02dh', $maxHour->hour_of_day) : '--h'
         ];
 

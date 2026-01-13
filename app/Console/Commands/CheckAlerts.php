@@ -130,7 +130,9 @@ class CheckAlerts extends Command
         // Query 2: Busca picos de hoje para todos carriers em uma única query agregada
         $peaksToday = \App\Models\Cdr::whereDate('calldate', today())
             ->whereIn('carrier_id', $carriers->keys())
-            ->selectRaw('carrier_id, MAX(carrier_channels) as peak_channels')
+            ->whereNotNull('carrier_channels')
+            ->where('carrier_channels', '!=', '')
+            ->selectRaw('carrier_id, MAX(CAST(carrier_channels AS INTEGER)) as peak_channels')
             ->groupBy('carrier_id')
             ->get()
             ->keyBy('carrier_id');

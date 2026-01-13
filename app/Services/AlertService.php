@@ -109,7 +109,10 @@ class AlertService
 
             $peakToday = Cdr::where('carrier_id', $carrierId)
                 ->whereDate('calldate', today())
-                ->max('carrier_channels');
+                ->whereNotNull('carrier_channels')
+                ->where('carrier_channels', '!=', '')
+                ->selectRaw('MAX(CAST(carrier_channels AS INTEGER)) as max_channels')
+                ->value('max_channels');
 
             $percentual = ($peakToday / $carrier->canais) * 100;
 
