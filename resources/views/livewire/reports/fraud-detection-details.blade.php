@@ -133,7 +133,7 @@
                                                         {{ number_format($item->total, 0, ',', '.') }}
                                                     </td>
                                                     <td class="px-3 py-2 text-gray-900 dark:text-gray-100">
-                                                        {{ gmdate('H:i:s', $item->duracao_total) }}
+                                                        {{ number_format($item->duracao_total / 60, 0) }} min
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -165,7 +165,7 @@
                                                         {{ number_format($item->total, 0, ',', '.') }}
                                                     </td>
                                                     <td class="px-3 py-2 text-gray-900 dark:text-gray-100">
-                                                        {{ gmdate('H:i:s', $item->duracao_total) }}
+                                                        {{ number_format($item->duracao_total / 60, 0) }} min
                                                     </td>
                                                 </tr>
                                             @endforeach

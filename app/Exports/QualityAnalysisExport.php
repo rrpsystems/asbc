@@ -107,8 +107,8 @@ class QualityAnalysisExport implements FromQuery, WithHeadings, WithMapping, Wit
             $item->chamadas_atendidas,
             $item->chamadas_nao_atendidas,
             number_format($item->asr, 2, ',', '.') . '%',
-            $item->acd,
-            gmdate('H:i:s', $item->total_duracao),
+            gmdate('i:s', $item->acd) . ' min',
+            number_format($item->total_duracao / 60, 0) . ' min',
             $classificacao,
         ];
     }

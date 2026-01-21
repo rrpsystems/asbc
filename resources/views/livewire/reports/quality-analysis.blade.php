@@ -90,7 +90,7 @@
                     <div>
                         <p class="text-sm font-medium text-purple-100">ACD (Duração Média)</p>
                         <p class="mt-1 text-2xl font-bold text-white">
-                            {{ gmdate('i:s', $totals->acd ?? 0) }}
+                            {{ gmdate('i:s', $totals->acd ?? 0) }} min
                         </p>
                     </div>
                     <div class="p-3 bg-white/20 rounded-full">
@@ -184,12 +184,12 @@
 
                             <x-tables.td class="py-2">
                                 <span class="font-medium text-purple-600 dark:text-purple-400">
-                                    {{ gmdate('i:s', $item->acd ?? 0) }}
+                                    {{ gmdate('i:s', $item->acd ?? 0) }} min
                                 </span>
                             </x-tables.td>
 
                             <x-tables.td class="py-2">
-                                {{ gmdate('H:i:s', $item->total_duracao ?? 0) }}
+                                {{ number_format(($item->total_duracao ?? 0) / 60, 0) }} min
                             </x-tables.td>
                         </x-tables.tr>
                     @empty

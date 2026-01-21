@@ -36,8 +36,8 @@ class AlertService
                 'message' => sprintf(
                     'Cliente %s excedeu a franquia de %s minutos. Uso atual: %s minutos (%.1f%%)',
                     $resumo->customer->razaosocial,
-                    gmdate('H:i', $resumo->franquia_minutos),
-                    gmdate('H:i', $resumo->minutos_usados),
+                    number_format($resumo->franquia_minutos, 0),
+                    number_format($resumo->minutos_usados, 0),
                     $percentualUsado
                 ),
                 'metadata' => [
@@ -59,8 +59,8 @@ class AlertService
                     'Cliente %s está em %.1f%% da franquia (%s de %s minutos)',
                     $resumo->customer->razaosocial,
                     $percentualUsado,
-                    gmdate('H:i', $resumo->minutos_usados),
-                    gmdate('H:i', $resumo->franquia_minutos)
+                    number_format($resumo->minutos_usados, 0),
+                    number_format($resumo->franquia_minutos, 0)
                 ),
                 'metadata' => [
                     'franquia_minutos' => $resumo->franquia_minutos,

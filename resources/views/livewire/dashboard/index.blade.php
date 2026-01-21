@@ -89,7 +89,7 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-xs font-medium text-orange-100">Duração Hoje</p>
-                                <p class="text-xl font-bold text-white truncate">{{ gmdate('H:i', $todayDuration) }}h</p>
+                                <p class="text-xl font-bold text-white truncate">{{ number_format($todayDuration / 60, 0) }} min</p>
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-cyan-100">Tempo Total</p>
-                            <p class="text-3xl font-bold text-white">{{ gmdate('H:i', $data2->sum('total_billsec')) }}h</p>
+                            <p class="text-3xl font-bold text-white">{{ number_format($data2->sum('total_billsec') / 60, 0) }} min</p>
                             <p class="mt-1 text-xs text-cyan-100 opacity-80">Duração acumulada</p>
                         </div>
                         <div class="p-3 bg-white bg-opacity-30 rounded-lg">
@@ -436,7 +436,7 @@
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
-                                                {{ gmdate('H:i', $item->total_billsec) }}
+                                                {{ number_format($item->total_billsec / 60, 0) }} min
                                             </span>
                                         </td>
                                     </tr>
@@ -530,7 +530,7 @@
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
-                                                {{ gmdate('H:i', $destino->total_duration) }}
+                                                {{ number_format($destino->total_duration / 60, 0) }} min
                                             </span>
                                         </td>
                                     </tr>
