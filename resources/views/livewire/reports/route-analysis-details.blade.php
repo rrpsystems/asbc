@@ -178,12 +178,16 @@
                         <div>
                             <h6 class="font-semibold text-yellow-800 dark:text-yellow-400">Recomendação LCR</h6>
                             <p class="text-sm text-yellow-700 dark:text-yellow-300">
-                                Roteando as chamadas deste prefixo para
-                                <strong>{{ $routeDetails['summary']['best_carrier']->nome }}</strong>, você economizará
-                                <strong>R$
-                                    {{ number_format($routeDetails['summary']['potential_savings'], 2, ',', '.') }}</strong>
-                                ({{ number_format($routeDetails['summary']['savings_percent'], 1, ',', '.') }}%) neste
-                                mês.
+                                @if($routeDetails['summary']['best_carrier'])
+                                    Roteando as chamadas deste prefixo para
+                                    <strong>{{ $routeDetails['summary']['best_carrier']->nome }}</strong>, você economizará
+                                    <strong>R$
+                                        {{ number_format($routeDetails['summary']['potential_savings'], 2, ',', '.') }}</strong>
+                                    ({{ number_format($routeDetails['summary']['savings_percent'], 1, ',', '.') }}%) neste
+                                    mês.
+                                @else
+                                    Nenhuma operadora disponível com tarifa cadastrada para este prefixo.
+                                @endif
                             </p>
                         </div>
                     </div>
