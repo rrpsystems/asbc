@@ -35,7 +35,7 @@
                         <div class="p-3 bg-green-50 rounded-lg dark:bg-green-900/20">
                             <p class="text-xs text-green-600 dark:text-green-400">Franquia</p>
                             <p class="mt-1 text-lg font-bold text-green-900 dark:text-green-300">
-                                {{ number_format($customerDetails['current']->franquia_minutos ?? 0, 0, ',', '.') }} min
+                                {{ number_format(ceil(($customerDetails['current']->franquia_minutos ?? 0) / 60), 0, ',', '.') }} min
                             </p>
                         </div>
 
