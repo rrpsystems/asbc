@@ -116,13 +116,13 @@ class RouteAnalysis extends Component
             ->join('carriers', 'cdrs.carrier_id', '=', 'carriers.id')
             ->select(
                 'carriers.id',
-                'carriers.nome',
+                'carriers.operadora as nome',
                 DB::raw('COUNT(*) as total_chamadas'),
                 DB::raw('SUM(billsec) as total_segundos'),
                 DB::raw('AVG(valor_compra) as custo_medio'),
                 DB::raw('SUM(valor_compra) as custo_total')
             )
-            ->groupBy('carriers.id', 'carriers.nome')
+            ->groupBy('carriers.id', 'carriers.operadora')
             ->get();
 
         // Calcular economia potencial usando LCR
