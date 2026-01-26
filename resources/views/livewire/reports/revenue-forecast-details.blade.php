@@ -44,7 +44,7 @@
                             <p class="mt-1 text-lg font-bold text-orange-900 dark:text-orange-300">
                                 @php
                                     $usoFranquia = $customerDetails['current']->franquia_minutos > 0
-                                        ? ($customerDetails['current']->minutos_usados / $customerDetails['current']->franquia_minutos) * 100
+                                        ? ($customerDetails['current']->minutos_usados / ($customerDetails['current']->franquia_minutos / 60)) * 100
                                         : 0;
                                 @endphp
                                 {{ number_format($usoFranquia, 1, ',', '.') }}%
@@ -90,7 +90,7 @@
                                             <td class="px-4 py-2 text-sm">
                                                 @php
                                                     $uso = $history->franquia_minutos > 0
-                                                        ? ($history->minutos_usados / $history->franquia_minutos) * 100
+                                                        ? ($history->minutos_usados / ($history->franquia_minutos / 60)) * 100
                                                         : 0;
                                                 @endphp
                                                 <span class="font-medium {{ $uso >= 100 ? 'text-red-600' : ($uso >= 80 ? 'text-yellow-600' : 'text-green-600') }}">
