@@ -221,32 +221,38 @@ class Index extends Component
         // Processar "Todos" apenas quando aplicar filtros
         $tarifa = $this->tarifa;
         if (is_array($tarifa) && in_array('All', $tarifa)) {
-            $tarifa = collect(TipoTarifa::options())->pluck('value')->toArray();
+            // "All" = não filtrar por tarifa (retornar array vazio para ignorar filtro)
+            $tarifa = [];
         }
 
         $carrier = $this->carrier;
         if (is_array($carrier) && in_array('All', $carrier)) {
-            $carrier = Carrier::pluck('id')->toArray();
+            // "All" = não filtrar por carrier (retornar array vazio para ignorar filtro)
+            $carrier = [];
         }
 
         $customer = $this->customer;
         if (is_array($customer) && in_array('All', $customer)) {
-            $customer = Customer::pluck('id')->toArray();
+            // "All" = não filtrar por customer (retornar array vazio para ignorar filtro)
+            $customer = [];
         }
 
         $did = $this->did;
         if (is_array($did) && in_array('All', $did)) {
-            $did = Did::pluck('did')->toArray();
+            // "All" = não filtrar por DID (retornar array vazio para ignorar filtro)
+            $did = [];
         }
 
         $stat = $this->stat;
         if (is_array($stat) && in_array('All', $stat)) {
-            $stat = ['Pendente', 'Tarifada', 'Erro', 'Processada'];
+            // "All" = não filtrar por status (retornar array vazio para ignorar filtro)
+            $stat = [];
         }
 
         $desligamento = $this->desligamento;
         if (is_array($desligamento) && in_array('All', $desligamento)) {
-            $desligamento = ['Origem', 'Destino'];
+            // "All" = não filtrar por desligamento (retornar array vazio para ignorar filtro)
+            $desligamento = [];
         }
 
         // Aplicar filtros
