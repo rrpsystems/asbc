@@ -117,7 +117,16 @@
 
                             <!-- Numero -->
                             <x-tables.td class="py-2 whitespace-nowrap">
-                                {{ format_phone($cdr->attributes['numero'] ?? $cdr->numero, $cdr->tarifa) }}
+                                <div class="flex flex-col gap-0.5">
+                                    <span class="font-medium text-gray-900 dark:text-gray-100">
+                                        {{ format_phone($cdr->attributes['numero'] ?? $cdr->numero, $cdr->tarifa) }}
+                                    </span>
+                                    @if($cdr->ramal)
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            Ramal: {{ $cdr->ramal }}
+                                        </span>
+                                    @endif
+                                </div>
                             </x-tables.td>
 
                             <!-- Tipo/Tarifa -->
