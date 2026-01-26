@@ -71,7 +71,7 @@
                     <div>
                         <p class="text-sm font-medium text-purple-100">Minutos Projetados</p>
                         <p class="mt-1 text-2xl font-bold text-white">
-                            {{ number_format($totals->minutos_projetados, 0, ',', '.') }} min
+                            {{ number_format($totals->minutos_projetados, 0, '.', '.') }} min
                         </p>
                     </div>
                     <div class="p-3 bg-white/20 rounded-full">
@@ -165,9 +165,9 @@
                             </td>
 
                             <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                                {{ number_format($item->minutos_total, 0, ',', '.') }} min /
+                                {{ number_format($item->minutos_total, 0, '.', '.') }} min /
                                 <span class="font-medium text-purple-600 dark:text-purple-400">
-                                    {{ number_format($item->minutos_projetados, 0, ',', '.') }} min
+                                    {{ number_format($item->minutos_projetados, 0, '.', '.') }} min
                                 </span>
                             </td>
 

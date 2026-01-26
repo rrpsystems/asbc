@@ -28,14 +28,14 @@
                         <div class="p-3 bg-purple-50 rounded-lg dark:bg-purple-900/20">
                             <p class="text-xs text-purple-600 dark:text-purple-400">Minutos Usados</p>
                             <p class="mt-1 text-lg font-bold text-purple-900 dark:text-purple-300">
-                                {{ number_format($customerDetails['current']->minutos_total ?? 0, 0, ',', '.') }} min
+                                {{ number_format($customerDetails['current']->minutos_total ?? 0, 0, '.', '.') }} min
                             </p>
                         </div>
 
                         <div class="p-3 bg-green-50 rounded-lg dark:bg-green-900/20">
                             <p class="text-xs text-green-600 dark:text-green-400">Franquia</p>
                             <p class="mt-1 text-lg font-bold text-green-900 dark:text-green-300">
-                                {{ number_format(ceil(($customerDetails['current']->franquia_minutos ?? 0) / 60), 0, ',', '.') }} min
+                                {{ number_format(ceil(($customerDetails['current']->franquia_minutos ?? 0) / 60), 0, '.', '.') }} min
                             </p>
                         </div>
 
@@ -85,7 +85,7 @@
                                                 R$ {{ number_format($history->custo_total, 2, ',', '.') }}
                                             </td>
                                             <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-100">
-                                                {{ number_format($history->minutos_total, 0, ',', '.') }} min
+                                                {{ number_format($history->minutos_total, 0, '.', '.') }} min
                                             </td>
                                             <td class="px-4 py-2 text-sm">
                                                 @php
@@ -117,7 +117,7 @@
                             <div>
                                 <p class="text-xs text-gray-600 dark:text-gray-400">Minutos Médios</p>
                                 <p class="text-lg font-bold text-gray-900 dark:text-gray-100">
-                                    {{ number_format($customerDetails['avg_minutos'] ?? 0, 0, ',', '.') }} min
+                                    {{ number_format($customerDetails['avg_minutos'] ?? 0, 0, '.', '.') }} min
                                 </p>
                             </div>
                         </div>

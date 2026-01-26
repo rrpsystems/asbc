@@ -184,14 +184,14 @@
                     @endphp
                     <tr>
                         <td><strong>{{ $summary->tarifa }}</strong></td>
-                        <td class="text-center">{{ number_format($summary->quantidade, 0, ',', '.') }}</td>
+                        <td class="text-center">{{ number_format($summary->quantidade, 0, '.', '.') }}</td>
                         <td class="text-center">{{ number_format(ceil($summary->total_segundos / 60), 0, ',', '.') }}</td>
                         <td class="text-right">R$ {{ number_format($summary->valor_total, 2, ',', '.') }}</td>
                     </tr>
                 @endforeach
                 <tr style="background-color: #e0e7ff; font-weight: bold; border-top: 2px solid #2563EB;">
                     <td><strong>TOTAL</strong></td>
-                    <td class="text-center"><strong>{{ number_format($totalChamadas, 0, ',', '.') }}</strong></td>
+                    <td class="text-center"><strong>{{ number_format($totalChamadas, 0, '.', '.') }}</strong></td>
                     <td class="text-center"><strong>{{ number_format(ceil($totalMinutos / 60), 0, ',', '.') }}</strong></td>
                     <td class="text-right"><strong>R$ {{ number_format($totalValor, 2, ',', '.') }}</strong></td>
                 </tr>

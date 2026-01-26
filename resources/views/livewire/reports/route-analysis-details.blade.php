@@ -20,7 +20,7 @@
                     <div class="p-3 bg-white rounded-lg dark:bg-gray-700">
                         <p class="text-xs text-gray-600 dark:text-gray-400">Total Minutos</p>
                         <p class="text-lg font-bold text-gray-900 dark:text-gray-100">
-                            {{ number_format($routeDetails['summary']['total_minutes'], 0, ',', '.') }}
+                            {{ number_format($routeDetails['summary']['total_minutes'], 0, '.', '.') }}
                         </p>
                     </div>
                     <div class="p-3 bg-white rounded-lg dark:bg-gray-700">
@@ -146,10 +146,10 @@
                                             {{ $usage->nome }}
                                         </td>
                                         <td class="px-4 py-2 text-center text-gray-900 dark:text-gray-100">
-                                            {{ number_format($usage->total_chamadas, 0, ',', '.') }}
+                                            {{ number_format($usage->total_chamadas, 0, '.', '.') }}
                                         </td>
                                         <td class="px-4 py-2 text-center text-gray-900 dark:text-gray-100">
-                                            {{ number_format($usage->total_segundos / 60, 0, ',', '.') }}
+                                            {{ number_format($usage->total_segundos / 60, 0, '.', '.') }}
                                         </td>
                                         <td class="px-4 py-2 text-right text-gray-900 dark:text-gray-100">
                                             R$ {{ number_format($usage->custo_medio, 4, ',', '.') }}

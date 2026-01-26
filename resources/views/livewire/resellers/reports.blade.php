@@ -66,11 +66,11 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-gray-700">
                         <span class="text-sm text-gray-600 dark:text-gray-400">Total</span>
-                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($summary['chamadas']['total'], 0, ',', '.') }}</span>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($summary['chamadas']['total'], 0, '.', '.') }}</span>
                     </div>
                     <div class="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-gray-700">
                         <span class="text-sm text-gray-600 dark:text-gray-400">Minutos</span>
-                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($summary['chamadas']['minutos'], 0, ',', '.') }}</span>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($summary['chamadas']['minutos'], 0, '.', '.') }}</span>
                     </div>
                     <div class="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-gray-700">
                         <span class="text-sm text-gray-600 dark:text-gray-400">Custo Base</span>
@@ -172,7 +172,7 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">{{ number_format($customer->total_chamadas, 0, ',', '.') }}</td>
+                                <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">{{ number_format($customer->total_chamadas, 0, '.', '.') }}</td>
                                 <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">{{ number_format(round($customer->total_segundos / 60), 0, ',', '.') }}</td>
                                 <td class="py-3 px-4 text-right text-red-600 dark:text-red-400 font-semibold">R$ {{ number_format($customer->total_custo_base, 2, ',', '.') }}</td>
                                 <td class="py-3 px-4 text-right text-green-600 dark:text-green-400 font-semibold">R$ {{ number_format($customer->total_receita_final, 2, ',', '.') }}</td>
@@ -217,8 +217,8 @@
                                         ({{ \Carbon\Carbon::parse($day->data)->dayName }})
                                     </span>
                                 </td>
-                                <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">{{ number_format($day->total_chamadas, 0, ',', '.') }}</td>
-                                <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">{{ number_format($day->minutos, 0, ',', '.') }}</td>
+                                <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">{{ number_format($day->total_chamadas, 0, '.', '.') }}</td>
+                                <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">{{ number_format($day->minutos, 0, '.', '.') }}</td>
                                 <td class="py-3 px-4 text-right text-red-600 dark:text-red-400 font-semibold">R$ {{ number_format($day->custo_base, 2, ',', '.') }}</td>
                                 <td class="py-3 px-4 text-right text-green-600 dark:text-green-400 font-semibold">R$ {{ number_format($day->receita_final, 2, ',', '.') }}</td>
                                 <td class="py-3 px-4 text-right text-purple-600 dark:text-purple-400 font-bold">R$ {{ number_format($day->lucro, 2, ',', '.') }}</td>

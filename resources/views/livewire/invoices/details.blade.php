@@ -193,7 +193,7 @@
                             @endphp
                             <div class="grid grid-cols-4 gap-2 text-xs text-gray-700 dark:text-gray-300">
                                 <div class="font-medium">{{ $summary->tarifa }}</div>
-                                <div class="text-center">{{ number_format($summary->quantidade, 0, ',', '.') }}</div>
+                                <div class="text-center">{{ number_format($summary->quantidade, 0, '.', '.') }}</div>
                                 <div class="text-center">{{ number_format(ceil($summary->total_segundos / 60), 0, ',', '.') }}</div>
                                 <div class="text-right">R$ {{ number_format($summary->valor_total, 2, ',', '.') }}</div>
                             </div>
@@ -202,7 +202,7 @@
                         <!-- Excedente Total -->
                         <div class="grid grid-cols-4 gap-2 text-xs text-orange-600 dark:text-orange-400">
                             <div class="font-medium">Excedente Total</div>
-                            <div class="text-center">{{ number_format($excedenteQtd, 0, ',', '.') }}</div>
+                            <div class="text-center">{{ number_format($excedenteQtd, 0, '.', '.') }}</div>
                             <div class="text-center">{{ number_format(ceil($excedenteSegundos / 60), 0, ',', '.') }}</div>
                             <div class="text-right">R$ {{ number_format($invoice->custo_excedente, 2, ',', '.') }}</div>
                         </div>
@@ -210,7 +210,7 @@
                         <div class="border-t-2 border-gray-300 dark:border-neutral-600 pt-2 mt-2">
                             <div class="grid grid-cols-4 gap-2 text-xs font-bold text-gray-900 dark:text-neutral-100">
                                 <div>TOTAL</div>
-                                <div class="text-center">{{ number_format($totalChamadas, 0, ',', '.') }}</div>
+                                <div class="text-center">{{ number_format($totalChamadas, 0, '.', '.') }}</div>
                                 <div class="text-center">{{ number_format(ceil($totalMinutos / 60), 0, ',', '.') }}</div>
                                 <div class="text-right">R$ {{ number_format($totalValor, 2, ',', '.') }}</div>
                             </div>

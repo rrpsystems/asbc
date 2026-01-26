@@ -85,7 +85,7 @@
                     <div>
                         <p class="text-sm font-medium text-green-600 dark:text-green-300">Total de Minutos</p>
                         <p class="text-2xl font-bold text-green-700 dark:text-green-200">
-                            {{ number_format(ceil(($totals->total_minutos ?? 0) / 60), 0, ',', '.') }} min
+                            {{ number_format(ceil(($totals->total_minutos ?? 0) / 60), 0, '.', '.') }} min
                         </p>
                         <p class="text-xs text-green-600 dark:text-green-400">
                             ≈ {{ number_format(($totals->total_minutos ?? 0) / 3600, 2, ',', '.') }} horas
@@ -198,7 +198,7 @@
                                 {{ str_pad($report->mes, 2, '0', STR_PAD_LEFT) }}/{{ $report->ano }}
                             </x-tables.td>
                             <x-tables.td class="py-2">
-                                <span class="text-sm">{{ number_format(ceil($report->minutos_utilizados / 60), 0, ',', '.') }} min</span>
+                                <span class="text-sm">{{ number_format(ceil($report->minutos_utilizados / 60), 0, '.', '.') }} min</span>
                                 <span class="block text-xs text-gray-500">({{ number_format($report->minutos_utilizados / 3600, 2, ',', '.') }} h)</span>
                             </x-tables.td>
                             <x-tables.td class="py-2 font-bold text-green-600 dark:text-green-400">

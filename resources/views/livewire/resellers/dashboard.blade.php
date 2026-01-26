@@ -106,12 +106,12 @@
             <div class="space-y-3">
                 <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
                     <span class="text-sm text-gray-600 dark:text-gray-400">Total de Chamadas</span>
-                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($chamadas_mes, 0, ',', '.') }}</span>
+                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($chamadas_mes, 0, '.', '.') }}</span>
                 </div>
 
                 <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
                     <span class="text-sm text-gray-600 dark:text-gray-400">Total de Minutos</span>
-                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($minutos_mes, 0, ',', '.') }} min</span>
+                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ number_format($minutos_mes, 0, '.', '.') }} min</span>
                 </div>
 
                 <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
@@ -192,7 +192,7 @@
                                     {{ $cliente->razaosocial }}
                                 </td>
                                 <td class="py-3 px-4 text-right text-gray-600 dark:text-gray-400">
-                                    {{ number_format($cliente->total_chamadas, 0, ',', '.') }}
+                                    {{ number_format($cliente->total_chamadas, 0, '.', '.') }}
                                 </td>
                                 <td class="py-3 px-4 text-right font-semibold text-green-600 dark:text-green-400">
                                     R$ {{ number_format($cliente->receita_total ?? 0, 2, ',', '.') }}

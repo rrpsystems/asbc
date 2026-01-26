@@ -19,7 +19,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-blue-100">Total de Clientes</p>
-                            <p class="text-3xl font-bold text-white">{{ number_format($stats->total, 0, ',', '.') }}</p>
+                            <p class="text-3xl font-bold text-white">{{ number_format($stats->total, 0, '.', '.') }}</p>
                         </div>
                         <div class="p-3 bg-white bg-opacity-30 rounded-lg">
                             <x-ui-icon name="user-group" class="w-8 h-8 text-white" />
@@ -34,7 +34,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-green-100">Clientes Ativos</p>
-                            <p class="text-3xl font-bold text-white">{{ number_format($stats->ativos, 0, ',', '.') }}</p>
+                            <p class="text-3xl font-bold text-white">{{ number_format($stats->ativos, 0, '.', '.') }}</p>
                         </div>
                         <div class="p-3 bg-white bg-opacity-30 rounded-lg">
                             <x-ui-icon name="check-circle" class="w-8 h-8 text-white" />
@@ -49,7 +49,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-red-100">Clientes Inativos</p>
-                            <p class="text-3xl font-bold text-white">{{ number_format($stats->inativos, 0, ',', '.') }}</p>
+                            <p class="text-3xl font-bold text-white">{{ number_format($stats->inativos, 0, '.', '.') }}</p>
                         </div>
                         <div class="p-3 bg-white bg-opacity-30 rounded-lg">
                             <x-ui-icon name="x-circle" class="w-8 h-8 text-white" />
@@ -64,7 +64,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-orange-100">Clientes Bloqueados</p>
-                            <p class="text-3xl font-bold text-white">{{ number_format($stats->bloqueados, 0, ',', '.') }}</p>
+                            <p class="text-3xl font-bold text-white">{{ number_format($stats->bloqueados, 0, '.', '.') }}</p>
                         </div>
                         <div class="p-3 bg-white bg-opacity-30 rounded-lg">
                             <x-ui-icon name="lock-closed" class="w-8 h-8 text-white" />
@@ -208,7 +208,7 @@
                             </x-tables.td>
                             <x-tables.td class="py-2">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
-                                    {{ number_format($customer->franquia_minutos, 0, ',', '.') }} min
+                                    {{ number_format($customer->franquia_minutos, 0, '.', '.') }} min
                                 </span>
                             </x-tables.td>
                             <x-tables.td class="py-2">

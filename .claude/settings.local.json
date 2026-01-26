@@ -124,7 +124,10 @@
       "Bash(\"C:\\\\Users\\\\Rafael Benedicto\\\\.config\\\\herd\\\\bin\\\\php.bat\" artisan optimize:clear)",
       "Bash(git mv:*)",
       "Bash(tree:*)",
-      "Bash(\"C:\\\\Users\\\\Rafael Benedicto\\\\.config\\\\herd\\\\bin\\\\php.bat\" artisan make:migration:*)"
+      "Bash(\"C:\\\\Users\\\\Rafael Benedicto\\\\.config\\\\herd\\\\bin\\\\php.bat\" artisan make:migration:*)",
+      "Bash(herd php artisan:*)",
+      "Bash(git restore:*)",
+      "Bash(find:*)"
     ]
   }
 }
