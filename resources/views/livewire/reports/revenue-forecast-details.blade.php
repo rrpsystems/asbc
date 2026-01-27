@@ -28,7 +28,7 @@
                         <div class="p-3 bg-purple-50 rounded-lg dark:bg-purple-900/20">
                             <p class="text-xs text-purple-600 dark:text-purple-400">Minutos Usados</p>
                             <p class="mt-1 text-lg font-bold text-purple-900 dark:text-purple-300">
-                                {{ number_format($customerDetails['current']->minutos_total ?? 0, 0, '.', '.') }} min
+                                {{ number_format(ceil(($customerDetails['current']->minutos_total ?? 0) / 60), 0, '.', '.') }} min
                             </p>
                         </div>
 
@@ -44,7 +44,7 @@
                             <p class="mt-1 text-lg font-bold text-orange-900 dark:text-orange-300">
                                 @php
                                     $usoFranquia = $customerDetails['current']->franquia_minutos > 0
-                                        ? ($customerDetails['current']->minutos_usados / ($customerDetails['current']->franquia_minutos / 60)) * 100
+                                        ? ($customerDetails['current']->minutos_usados / $customerDetails['current']->franquia_minutos) * 100
                                         : 0;
                                 @endphp
                                 {{ number_format($usoFranquia, 1, ',', '.') }}%
@@ -85,12 +85,12 @@
                                                 R$ {{ number_format($history->custo_total, 2, ',', '.') }}
                                             </td>
                                             <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-100">
-                                                {{ number_format($history->minutos_total, 0, '.', '.') }} min
+                                                {{ number_format(ceil($history->minutos_total / 60), 0, '.', '.') }} min
                                             </td>
                                             <td class="px-4 py-2 text-sm">
                                                 @php
                                                     $uso = $history->franquia_minutos > 0
-                                                        ? ($history->minutos_usados / ($history->franquia_minutos / 60)) * 100
+                                                        ? ($history->minutos_usados / $history->franquia_minutos) * 100
                                                         : 0;
                                                 @endphp
                                                 <span class="font-medium {{ $uso >= 100 ? 'text-red-600' : ($uso >= 80 ? 'text-yellow-600' : 'text-green-600') }}">
@@ -117,7 +117,7 @@
                             <div>
                                 <p class="text-xs text-gray-600 dark:text-gray-400">Minutos Médios</p>
                                 <p class="text-lg font-bold text-gray-900 dark:text-gray-100">
-                                    {{ number_format($customerDetails['avg_minutos'] ?? 0, 0, '.', '.') }} min
+                                    {{ number_format(ceil(($customerDetails['avg_minutos'] ?? 0) / 60), 0, '.', '.') }} min
                                 </p>
                             </div>
                         </div>

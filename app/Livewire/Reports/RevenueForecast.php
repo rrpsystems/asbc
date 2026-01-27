@@ -99,7 +99,7 @@ class RevenueForecast extends Component
                 END as minutos_projetados"),
                 DB::raw("CASE
                     WHEN revenue_summaries.franquia_minutos > 0 THEN
-                        ((revenue_summaries.minutos_total / {$diaAtual}) * {$diasNoMes} / (revenue_summaries.franquia_minutos / 60)) * 100
+                        ((revenue_summaries.minutos_total / {$diaAtual}) * {$diasNoMes} / revenue_summaries.franquia_minutos) * 100
                     ELSE 0
                 END as previsao_uso_franquia"),
             ])
